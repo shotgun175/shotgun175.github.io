@@ -1,0 +1,19 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+
+# Editor / IDE
+.vscode/
+.idea/
+
+# AI tooling
+.claude/
+.cursor/
+.playwright-mcp/
+
+# Local scratch
+*.log
+tmp/

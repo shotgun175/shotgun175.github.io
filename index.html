@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- ============================================================
+       Lost Ark Tools — static hub page. No framework, no build.
+       To rename the hub, search-and-replace "Lost Ark Tools".
+       To add a tool, copy the commented card template below.
+       ============================================================ -->
+
+  <title>Lost Ark Tools — raiding utilities by shotgun175</title>
+  <meta name="description" content="A small hub for shotgun175's Lost Ark utilities: an Ark Grid optimizer, raid mechanic and dark-grenade overlays, and a roster automation tool." />
+  <meta name="author" content="shotgun175" />
+  <meta name="theme-color" content="#0a0b13" />
+  <link rel="canonical" href="https://shotgun175.github.io/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Lost Ark Tools" />
+  <meta property="og:title" content="Lost Ark Tools — raiding utilities by shotgun175" />
+  <meta property="og:description" content="An Ark Grid optimizer, raid mechanic and dark-grenade overlays, and a roster automation tool — collected in one place." />
+  <meta property="og:url" content="https://shotgun175.github.io/" />
+  <meta property="og:image" content="https://shotgun175.github.io/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Lost Ark Tools — a hub for shotgun175's raiding utilities." />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Lost Ark Tools — raiding utilities by shotgun175" />
+  <meta name="twitter:description" content="An Ark Grid optimizer, raid mechanic and dark-grenade overlays, and a roster automation tool — collected in one place." />
+  <meta name="twitter:image" content="https://shotgun175.github.io/og-image.png" />
+  <meta name="twitter:image:alt" content="Lost Ark Tools — a hub for shotgun175's raiding utilities." />
+
+  <!-- Icons -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+  <!-- Fonts: distinctive display serif + readable text serif + console mono.
+       Fallback stacks keep the page legible if the request fails. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&display=swap" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#tools">Skip to tools</a>
+
+  <div class="page">
+    <header class="hero" role="banner">
+      <p class="hero__eyebrow">shotgun175 · Lost Ark raiding toolkit</p>
+      <h1 class="hero__title">Lost&nbsp;Ark Tools</h1>
+      <p class="hero__lede">
+        A small workshop of utilities for Lost Ark raiding — built to shave the
+        busywork off planning, prep, and the pulls themselves. Pick a tool below.
+      </p>
+      <p class="hero__rule" aria-hidden="true"><span></span>&#9670;<span></span></p>
+    </header>
+
+    <main id="main">
+      <section class="tools" id="tools" aria-labelledby="tools-heading" tabindex="-1">
+        <div class="section-head">
+          <h2 id="tools-heading" class="section-head__title">The toolkit</h2>
+          <!-- Progressive enhancement only: hidden until enhance.js enables it.
+               Without JS, every card stays visible and there is no broken control. -->
+          <div class="toolbar" role="group" aria-label="Filter tools by type" hidden>
+            <button type="button" class="chip" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" class="chip" data-filter="optimizer" aria-pressed="false">Optimizers</button>
+            <button type="button" class="chip" data-filter="overlay" aria-pressed="false">Overlays</button>
+            <button type="button" class="chip" data-filter="automation" aria-pressed="false">Automation</button>
+          </div>
+        </div>
+
+        <p class="sr-only" role="status" aria-live="polite" data-result-count></p>
+
+        <div class="card-grid">
+
+          <!-- Tool 1 — ArkGrid Optimizer (in-browser web app) -->
+          <article class="card" data-kind="optimizer" data-platform="web" data-region="global">
+            <div class="card__top">
+              <span class="card__icon" aria-hidden="true">
+                <!-- grid / node motif -->
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                  <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+                  <path d="M10 6.5h4M6.5 10v4M17.5 10v4M10 17.5h4"/>
+                </svg>
+              </span>
+              <ul class="pills" aria-label="Tool details">
+                <li class="pill pill--kind">Optimizer</li>
+                <li class="pill">Browser</li>
+                <li class="pill">All regions</li>
+              </ul>
+            </div>
+            <h3 class="card__title">ArkGrid Optimizer</h3>
+            <p class="card__blurb">
+              Plan and optimize your Ark Grid: screen recognition reads your gems and
+              advises the best fusing and cutting.
+            </p>
+            <a class="btn" href="https://shotgun175.github.io/LostArk-ArkGrid-Optimizer/">
+              Open tool
+              <svg class="btn__arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </article>
+
+          <!-- Tool 2 — Raid Mech Announcer (Windows desktop overlay, Tauri) -->
+          <article class="card" data-kind="overlay" data-platform="windows" data-region="global">
+            <div class="card__top">
+              <span class="card__icon" aria-hidden="true">
+                <!-- broadcast / alert motif -->
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3v6"/><circle cx="12" cy="12" r="2.5"/>
+                  <path d="M6.5 6.5a8 8 0 0 0 0 11M17.5 6.5a8 8 0 0 1 0 11"/>
+                  <path d="M9 9a4 4 0 0 0 0 6M15 9a4 4 0 0 1 0 6"/>
+                </svg>
+              </span>
+              <ul class="pills" aria-label="Tool details">
+                <li class="pill pill--kind">Overlay</li>
+                <li class="pill">Windows</li>
+                <li class="pill">All regions</li>
+              </ul>
+            </div>
+            <h3 class="card__title">Raid Mech Announcer</h3>
+            <p class="card__blurb">
+              Lightweight raid overlay that announces upcoming mechanics by HP threshold
+              or timer, so your party reacts early.
+            </p>
+            <a class="btn" href="https://github.com/shotgun175/Raid-Mech-Announcer/releases/latest">
+              Download
+              <svg class="btn__arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+            </a>
+          </article>
+
+          <!-- Tool 3 — Dark Rotation Manager (Windows desktop overlay, PyInstaller .exe) -->
+          <article class="card" data-kind="overlay" data-platform="windows" data-region="global">
+            <div class="card__top">
+              <span class="card__icon" aria-hidden="true">
+                <!-- rotation / orbit motif -->
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/><circle cx="12" cy="12" r="2.2"/>
+                </svg>
+              </span>
+              <ul class="pills" aria-label="Tool details">
+                <li class="pill pill--kind">Overlay</li>
+                <li class="pill">Windows</li>
+                <li class="pill">All regions</li>
+              </ul>
+            </div>
+            <h3 class="card__title">Dark Rotation Manager</h3>
+            <p class="card__blurb">
+              Coordinates dark grenade throws across your party with an on-screen rotation,
+              so nobody wastes a cooldown mid-raid.
+            </p>
+            <a class="btn" href="https://github.com/shotgun175/Dark-Rotation-Manager/releases/latest">
+              Download
+              <svg class="btn__arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+            </a>
+          </article>
+
+          <!-- Tool 4 — Bible Roster Updater (command-line automation) -->
+          <article class="card" data-kind="automation" data-platform="cli" data-region="na-eu">
+            <div class="card__top">
+              <span class="card__icon" aria-hidden="true">
+                <!-- terminal prompt motif -->
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M13 15h4"/>
+                </svg>
+              </span>
+              <ul class="pills" aria-label="Tool details">
+                <li class="pill pill--kind">Automation</li>
+                <li class="pill">Command line</li>
+                <li class="pill">NA / EU</li>
+              </ul>
+            </div>
+            <h3 class="card__title">Bible Roster Updater</h3>
+            <p class="card__blurb">
+              Pulls your lostark.bible rosters and writes raid-eligible characters straight
+              to a Google Sheet for fast raid planning.
+            </p>
+            <a class="btn" href="https://github.com/shotgun175/LostArk-Bible-Roster-Updater">
+              View on GitHub
+              <svg class="btn__arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </article>
+
+          <!-- ============================================================
+               CARD TEMPLATE — copy this whole <article> to add a 5th tool.
+               1. Set data-kind   to: optimizer | overlay | automation
+                  (this drives the accent colour and the filter buttons).
+               2. Set data-platform / data-region to whatever you like — they
+                  are shown as the 2nd and 3rd pills and are free-text.
+               3. Swap the <svg> icon, the title, the 12–18 word blurb,
+                  the three pill labels, the link href, and the button text
+                  ("Open tool" / "Download" / "View on GitHub").
+               If you add a new data-kind value, add a matching rule in
+               styles.css (search "data-kind") and a chip in the .toolbar above.
+
+          <article class="card" data-kind="optimizer" data-platform="web" data-region="global">
+            <div class="card__top">
+              <span class="card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="8"/>
+                </svg>
+              </span>
+              <ul class="pills" aria-label="Tool details">
+                <li class="pill pill--kind">Kind</li>
+                <li class="pill">Platform</li>
+                <li class="pill">Region</li>
+              </ul>
+            </div>
+            <h3 class="card__title">New Tool Name</h3>
+            <p class="card__blurb">
+              A one-sentence blurb, roughly twelve to eighteen words, describing
+              what the tool does and who it helps.
+            </p>
+            <a class="btn" href="https://example.com/">
+              Open tool
+              <svg class="btn__arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </article>
+
+               ============================================================ -->
+
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      <p class="site-footer__note">
+        Lost Ark Tools is a fan-made hub by shotgun175. It is not affiliated with,
+        endorsed by, or sponsored by Smilegate RPG or Amazon Games. "Lost Ark" and
+        related marks belong to their respective owners.
+      </p>
+      <p class="site-footer__meta">
+        <a href="https://github.com/shotgun175">github.com/shotgun175</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/shotgun175/shotgun175.github.io">View source</a>
+      </p>
+    </footer>
+  </div>
+
+  <!-- Optional progressive enhancement. The page is fully functional without it. -->
+  <script src="enhance.js" defer></script>
+</body>
+</html>
