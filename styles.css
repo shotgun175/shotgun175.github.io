@@ -8,7 +8,11 @@
 :root {
   color-scheme: dark;
 
-  /* --- palette --- */
+  /* --- palette ---
+     CANONICAL Lost Ark Tools brand palette. The no-build setup means these
+     hexes are also hardcoded in: assets/og-image.html, snippets/hub-badge.html,
+     and favicon.svg (plus the badge copies embedded in the tool repos — see
+     README "Hub badge embeds"). Change a color here -> update those together. */
   --bg:        #0a0b13;   /* obsidian */
   --bg-2:      #0d0f1d;
   --surface:   #14172a;   /* card base */

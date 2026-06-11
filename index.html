@@ -34,15 +34,19 @@
   <meta name="twitter:image" content="https://shotgun175.github.io/og-image.png" />
   <meta name="twitter:image:alt" content="Lost Ark Tools — a hub for shotgun175's raiding utilities." />
 
-  <!-- Icons -->
+  <!-- Icons (SVG first; the PNG is the fallback for older Safari and crawlers
+       that ignore SVG favicons) -->
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Fonts: distinctive display serif + readable text serif + console mono.
        Fallback stacks keep the page legible if the request fails. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&display=swap" />
+  <!-- Weights limited to what styles.css actually uses: Cinzel 600/700,
+       mono 400/500, Spectral 300/400 (no italics). -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Spectral:wght@300;400&display=swap" />
 
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -61,7 +65,7 @@
       <p class="hero__rule" aria-hidden="true"><span></span>&#9670;<span></span></p>
     </header>
 
-    <main id="main">
+    <main>
       <section class="tools" id="tools" aria-labelledby="tools-heading" tabindex="-1">
         <div class="section-head">
           <h2 id="tools-heading" class="section-head__title">The toolkit</h2>
@@ -80,7 +84,7 @@
         <div class="card-grid">
 
           <!-- Tool 1 — ArkGrid Optimizer (in-browser web app) -->
-          <article class="card" data-kind="optimizer" data-platform="web" data-region="global">
+          <article class="card" data-kind="optimizer">
             <div class="card__top">
               <span class="card__icon" aria-hidden="true">
                 <!-- grid / node motif -->
@@ -108,7 +112,7 @@
           </article>
 
           <!-- Tool 2 — Raid Mech Announcer (Windows desktop overlay, Tauri) -->
-          <article class="card" data-kind="overlay" data-platform="windows" data-region="global">
+          <article class="card" data-kind="overlay">
             <div class="card__top">
               <span class="card__icon" aria-hidden="true">
                 <!-- broadcast / alert motif -->
@@ -136,7 +140,7 @@
           </article>
 
           <!-- Tool 3 — Dark Rotation Manager (Windows desktop overlay, PyInstaller .exe) -->
-          <article class="card" data-kind="overlay" data-platform="windows" data-region="global">
+          <article class="card" data-kind="overlay">
             <div class="card__top">
               <span class="card__icon" aria-hidden="true">
                 <!-- rotation / orbit motif -->
@@ -162,7 +166,7 @@
           </article>
 
           <!-- Tool 4 — Bible Roster Updater (command-line automation) -->
-          <article class="card" data-kind="automation" data-platform="cli" data-region="na-eu">
+          <article class="card" data-kind="automation">
             <div class="card__top">
               <span class="card__icon" aria-hidden="true">
                 <!-- terminal prompt motif -->
@@ -191,15 +195,15 @@
                CARD TEMPLATE — copy this whole <article> to add a 5th tool.
                1. Set data-kind   to: optimizer | overlay | automation
                   (this drives the accent colour and the filter buttons).
-               2. Set data-platform / data-region to whatever you like — they
-                  are shown as the 2nd and 3rd pills and are free-text.
+               2. Write the 2nd and 3rd pills (platform / region) as plain
+                  <li> text — nothing renders them from attributes.
                3. Swap the <svg> icon, the title, the 12–18 word blurb,
                   the three pill labels, the link href, and the button text
                   ("Open tool" / "Download" / "View on GitHub").
                If you add a new data-kind value, add a matching rule in
                styles.css (search "data-kind") and a chip in the .toolbar above.
 
-          <article class="card" data-kind="optimizer" data-platform="web" data-region="global">
+          <article class="card" data-kind="optimizer">
             <div class="card__top">
               <span class="card__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">

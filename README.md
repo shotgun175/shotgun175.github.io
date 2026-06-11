@@ -17,6 +17,7 @@ This repository is the GitHub Pages root for the `shotgun175` account
 | `styles.css` | The design system (palette, type, responsive grid, focus + reduced-motion). |
 | `enhance.js` | Optional filter-by-type enhancement. The page works fully without it. |
 | `favicon.svg` | Site icon (the Ark-Grid lattice mark). |
+| `favicon-32.png` | 32x32 raster fallback for browsers/crawlers that ignore SVG icons. |
 | `og-image.png` | 1200x630 social preview image. |
 | `apple-touch-icon.png` | 180x180 home-screen icon. |
 | `assets/og-image.html` | Editable source used to render `og-image.png`. |
@@ -41,7 +42,8 @@ This repository is the GitHub Pages root for the `shotgun175` account
 3. Edit these fields:
    - `data-kind` — one of `optimizer`, `overlay`, `automation`. This drives the
      card's accent colour and the filter buttons.
-   - `data-platform` / `data-region` — free text shown as the 2nd and 3rd pills.
+   - The 2nd and 3rd pills (platform / region) — plain `<li>` text inside the
+     card; nothing renders them from attributes.
    - The `<svg>` icon, the `<h3>` title, the 12-18 word blurb, the three pill
      labels, the link `href`, and the button text
      (`Open tool` / `Download` / `View on GitHub`).
@@ -82,31 +84,30 @@ the card links monthly for rot; it never builds or publishes anything.)
 
 `.nojekyll` is included so Pages serves every file untouched.
 
-## Follow-on: embed the hub badge in each tool
+## Hub badge embeds (status / sync reference)
 
-Once the hub URL is live, link each tool back to it using
-`snippets/hub-badge.html`. These edits happen in the individual tool repos
-(not in this one):
+`snippets/hub-badge.html` is the canonical badge source. All four tools already
+embed it; when the badge changes, refresh these copies:
 
-- **ArkGrid Optimizer** - paste the badge into the footer of `src/App.svelte`.
-- **Raid Mech Announcer** - add it to the About / Help view or the settings
-  footer.
-- **Dark Rotation Manager** - add it to the About / Help view or the settings
-  footer.
-- **Bible Roster Updater** (CLI, no UI) - add a "Part of Lost Ark Tools"
-  link to its `README.md` instead of the HTML badge:
+| Tool | Where the badge lives |
+| --- | --- |
+| ArkGrid Optimizer | `src/lib/HubBadge.svelte` (rendered by `src/components/Footer/Footer.svelte`) |
+| Raid Mech Announcer | `src/lib/components/HubBadge.svelte` (Settings → About) |
+| Dark Rotation Manager | bottom-bar link in `modules/gui_app.py` + a `README.md` line |
+| Bible Roster Updater | `README.md` line (CLI, no UI) |
 
-  ```markdown
-  Part of [Lost Ark Tools](https://shotgun175.github.io/) - see all tools.
-  ```
-
-The badge is self-contained (scoped class names, its own colours, system-font
-fallbacks), so it drops cleanly into either Svelte app without clashing with
-existing styles.
+Note for the Svelte apps: a raw `<style>`-in-markup paste is not valid Svelte
+template content, so both use a dedicated `HubBadge.svelte` component adapted
+from the snippet (each copy carries a "synced from …" origin comment).
 
 ## Notes
 
 - Fonts (Cinzel, Spectral, IBM Plex Mono) load from Google Fonts with system
   fallbacks, so the page stays legible if that request fails.
+- **Changing brand colors: update these 4 files together.** The `:root` token
+  block in `styles.css` is the canonical Lost Ark Tools palette; the same hexes
+  are hardcoded (no-build constraint) in `assets/og-image.html`,
+  `snippets/hub-badge.html`, and `favicon.svg`. The badge copies embedded in
+  the tool repos (see the table above) carry the same hexes too.
 - No backend, no analytics, no tracking.
 - This is a fan project and is not affiliated with Smilegate RPG or Amazon Games.
