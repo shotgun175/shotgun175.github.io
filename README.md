@@ -70,7 +70,9 @@ file, open it in a browser sized to exactly 1200x630, and export a 1200x630 PNG
 
 ## Deploying (GitHub Pages from a branch)
 
-This site needs no workflow - it is plain static files.
+Deployment needs no workflow - it is plain static files. (The repository does
+carry one scheduled workflow, `.github/workflows/link-check.yml`, which checks
+the card links monthly for rot; it never builds or publishes anything.)
 
 1. Push the default branch to `github.com/shotgun175/shotgun175.github.io`.
 2. In the repository: **Settings -> Pages -> Build and deployment**.
