@@ -1,0 +1,32 @@
+name: Link check
+
+# The hub's only job is linking out, and its only silent failure mode is link
+# rot — a dead "Open tool" / "Download" button with no signal to the owner.
+# Monthly check (plus on-demand) that every card href still resolves.
+# Deployment still needs no build; this workflow never publishes anything.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 7 3 * *' # monthly
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Check every card link in index.html
+        run: |
+          set -euo pipefail
+          # Pull the card action hrefs straight from the page so the list
+          # cannot drift from what the hub actually links. example.com is the
+          # commented-out CARD TEMPLATE's placeholder, not a real card.
+          mapfile -t urls < <(grep -oP '(?<=class="btn" href=")[^"]+' index.html | grep -v '^https://example\.com')
+          echo "Checking ${#urls[@]} card links"
+          if [ "${#urls[@]}" -eq 0 ]; then echo "No card links found — selector drift?"; exit 1; fi
+          fail=0
+          for url in "${urls[@]}"; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --location --max-time 30 "$url") || code=000
+            echo "$code  $url"
+            if [ "$code" -lt 200 ] || [ "$code" -ge 400 ]; then fail=1; fi
+          done
+          exit $fail

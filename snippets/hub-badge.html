@@ -3,11 +3,22 @@
      A tiny, framework-free "Part of Lost Ark Tools" link block that any of the
      tools can embed to point visitors back to the hub.
 
+     THIS FILE IS THE CANONICAL BADGE SOURCE. Embedded copies live in the tool
+     repos; when copying, include an origin comment in the copy —
+     "synced from shotgun175.github.io/snippets/hub-badge.html" — so future
+     badge updates can find and refresh every copy.
+
      USAGE
        Paste this whole block into a footer / About / Help area. Everything is
        self-contained: scoped class names (.lat-badge*), its own colours and
-       font fallbacks, and a `all: revert` reset so the host app's styles do
-       not leak in. No build step, no dependencies, no JavaScript.
+       font fallbacks, no build step, no dependencies, no JavaScript.
+
+       Style isolation is best-effort, not guaranteed: the `all: revert` reset
+       applies to the root element only, so host globals that target child
+       elements (e.g. `a span { ... }` or `svg { ... }`) still reach the inner
+       spans/SVGs — verified by rendering the badge inside a hostile test page.
+       After embedding in a style-heavy app, eyeball the badge once; if it looks
+       off, scope your globals or add explicit overrides under `.lat-badge`.
 
        If your app already loads Cinzel / IBM Plex Mono, the badge will use them;
        otherwise it falls back to system fonts. Update the href only if the hub
