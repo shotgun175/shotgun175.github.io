@@ -27,6 +27,7 @@
   --gold:   #f0b94d;      /* the Ark's light */
   --astral: #54d8d2;      /* astral cyan */
   --violet: #a394f5;      /* arcane / dark */
+  --emerald: #5cd98c;     /* economy / value — per-kind card accent, not part of the brand mark */
 
   /* default accent; overridden per card by data-kind */
   --accent: var(--gold);
@@ -276,6 +277,7 @@ a { color: var(--astral); }
 .card[data-kind="optimizer"]  { --accent: var(--gold); }
 .card[data-kind="overlay"]    { --accent: var(--astral); }
 .card[data-kind="automation"] { --accent: var(--violet); }
+.card[data-kind="economy"]    { --accent: var(--emerald); }
 
 .card__top {
   display: flex;

@@ -1,7 +1,7 @@
 # Lost Ark Tools
 
 A small static hub that collects shotgun175's Lost Ark utilities in one place, so
-they are no longer four unlinked repositories. One hand-written page, no framework,
+they are no longer five unlinked repositories. One hand-written page, no framework,
 no build step, no required JavaScript.
 
 **Live site:** https://shotgun175.github.io/
@@ -32,6 +32,7 @@ This repository is the GitHub Pages root for the `shotgun175` account
 | Raid Mech Announcer | Windows overlay (Tauri) | Latest GitHub release |
 | Dark Rotation Manager | Windows overlay (PyInstaller) | Latest GitHub release |
 | Bible Roster Updater | Command-line automation | GitHub repository |
+| Cash Shop Value | In-browser web app | https://shotgun175.github.io/LostArk-Cash-Shop-Value/ |
 
 ## How to add a tool card
 
@@ -40,7 +41,7 @@ This repository is the GitHub Pages root for the `shotgun175` account
 2. Copy the entire commented `<article class="card"> ... </article>` block and
    paste it into the `.card-grid` as a real (uncommented) card.
 3. Edit these fields:
-   - `data-kind` — one of `optimizer`, `overlay`, `automation`. This drives the
+   - `data-kind` — one of `optimizer`, `overlay`, `automation`, `economy`. This drives the
      card's accent colour and the filter buttons.
    - The 2nd and 3rd pills (platform / region) — plain `<li>` text inside the
      card; nothing renders them from attributes.
