@@ -87,7 +87,7 @@ the card links monthly for rot; it never builds or publishes anything.)
 
 ## Hub badge embeds (status / sync reference)
 
-`snippets/hub-badge.html` is the canonical badge source. All four tools already
+`snippets/hub-badge.html` is the canonical badge source. All five tools already
 embed it; when the badge changes, refresh these copies:
 
 | Tool | Where the badge lives |
@@ -96,9 +96,10 @@ embed it; when the badge changes, refresh these copies:
 | Raid Mech Announcer | `src/lib/components/HubBadge.svelte` (Settings → About) |
 | Dark Rotation Manager | bottom-bar link in `modules/gui_app.py` + a `README.md` line |
 | Bible Roster Updater | `README.md` line (CLI, no UI) |
+| Cash Shop Value | `web/src/lib/components/HubBadge.svelte` (rendered by the `src/routes/+layout.svelte` footer) |
 
 Note for the Svelte apps: a raw `<style>`-in-markup paste is not valid Svelte
-template content, so both use a dedicated `HubBadge.svelte` component adapted
+template content, so all three use a dedicated `HubBadge.svelte` component adapted
 from the snippet (each copy carries a "synced from …" origin comment).
 
 ## Notes
