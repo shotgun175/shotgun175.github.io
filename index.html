@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
 
   <!-- ============================================================
        Lost Ark Tools — static hub page. No framework, no build.
+       Command deck: tools grouped into three raid-timeline banks,
+       each wearing a run-mode lamp (Open now / Download / Set up).
        To rename the hub, search-and-replace "Lost Ark Tools".
-       To add a tool, copy the commented card template below.
+       To add a tool, copy the commented TILE TEMPLATE below.
        ============================================================ -->
 
   <title>Lost Ark Tools — raiding utilities by shotgun175</title>
@@ -49,217 +52,308 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Spectral:wght@300;400&display=swap" />
 
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Flash-free progressive enhancement: mark JS on before first paint so the
+       scroll-reveal can pre-hide tiles. With JS disabled this never runs, the
+       .no-js class stays, and every tile renders fully visible. -->
+  <script>document.documentElement.classList.remove("no-js");document.documentElement.classList.add("js");</script>
 </head>
 
 <body>
-  <a class="skip-link" href="#tools">Skip to tools</a>
+  <a class="skip-link" href="#deck">Skip to tools</a>
 
   <div class="page">
-    <header class="hero" role="banner">
-      <p class="hero__eyebrow">shotgun175 · Lost Ark raiding toolkit</p>
-      <h1 class="hero__title">Lost&nbsp;Ark Tools</h1>
-      <p class="hero__lede">
-        A small workshop of utilities for Lost Ark raiding — built to shave the
-        busywork off planning, prep, and the pulls themselves. Pick a tool below.
+    <header class="masthead" role="banner">
+      <span class="masthead__glow" aria-hidden="true"></span>
+
+      <div class="masthead__top">
+        <span class="brand">
+          <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+            <rect width="32" height="32" rx="7" fill="#0a0b13"/>
+            <rect x="0.75" y="0.75" width="30.5" height="30.5" rx="6.25" fill="none" stroke="#54d8d2" stroke-opacity="0.28"/>
+            <g stroke="#54d8d2" stroke-opacity="0.45" stroke-width="1.4" stroke-linecap="round">
+              <path d="M9 9h14M9 16h14M9 23h14M9 9v14M16 9v14M23 9v14"/>
+            </g>
+            <g fill="#0a0b13" stroke="#7e85a8" stroke-width="1.2">
+              <circle cx="9" cy="9" r="1.7"/><circle cx="23" cy="9" r="1.7"/>
+              <circle cx="9" cy="23" r="1.7"/><circle cx="23" cy="23" r="1.7"/>
+            </g>
+            <circle cx="16" cy="16" r="4.6" fill="#f0b94d"/>
+            <circle cx="16" cy="16" r="4.6" fill="none" stroke="#fff7e6" stroke-opacity="0.5"/>
+          </svg>
+          <h1 class="wordmark">Lost&nbsp;Ark Tools</h1>
+        </span>
+        <p class="masthead__eyebrow">shotgun175 · Lost Ark raiding kit</p>
+      </div>
+
+      <p class="masthead__lede">
+        Raiding utilities, grouped by when you reach for them — each one tells you
+        up front how you engage it, so you know the cost of a click before you make it.
       </p>
-      <p class="hero__rule" aria-hidden="true"><span></span>&#9670;<span></span></p>
+
+      <div class="panelstrip">
+        <ul class="legend" aria-label="What the lamp on each tool means">
+          <li data-mode="open">
+            <span class="lamp lamp--mini" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="14" height="14"><circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>
+            </span>
+            <b>Open now</b> runs in your browser
+          </li>
+          <li data-mode="download">
+            <span class="lamp lamp--mini" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v9"/><path d="M8 10l4 4 4-4"/><path d="M5 19h14"/></svg>
+            </span>
+            <b>Download</b> Windows build
+          </li>
+          <li data-mode="setup">
+            <span class="lamp lamp--mini" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8l4 4-4 4"/><path d="M12 16h7"/></svg>
+            </span>
+            <b>Set up</b> clone &amp; configure
+          </li>
+        </ul>
+        <p class="status">
+          <span class="status__pip" aria-hidden="true"></span>
+          <span title="Every outbound tool link is verified monthly by an automated link-check job">All links checked monthly</span>
+        </p>
+      </div>
     </header>
 
-    <main>
-      <section class="tools" id="tools" aria-labelledby="tools-heading" tabindex="-1">
-        <div class="section-head">
-          <h2 id="tools-heading" class="section-head__title">The toolkit</h2>
-          <!-- Progressive enhancement only: hidden until enhance.js enables it.
-               Without JS, every card stays visible and there is no broken control. -->
-          <div class="toolbar" role="group" aria-label="Filter tools by type" hidden>
-            <button type="button" class="chip" data-filter="all" aria-pressed="true">All</button>
-            <button type="button" class="chip" data-filter="optimizer" aria-pressed="false">Optimizers</button>
-            <button type="button" class="chip" data-filter="overlay" aria-pressed="false">Overlays</button>
-            <button type="button" class="chip" data-filter="automation" aria-pressed="false">Automation</button>
-            <button type="button" class="chip" data-filter="economy" aria-pressed="false">Economy Math</button>
-          </div>
+    <main id="deck">
+
+      <!-- ============================================================
+           BANK = a job-to-be-done, ordered by the raid timeline.
+           TILE TEMPLATE — copy one <li class="tile"> to add a tool.
+             1. data-mode = open | download | setup  (drives the lamp
+                color, the spec accent, and the CTA color).
+             2. Put the tool's own glyph <svg> inside .lamp (the color
+                already encodes the run mode; the glyph says which tool).
+             3. Fill: name; a spec line (MODE · PLATFORM · REGION); one
+                plain-verb line; an optional labeled .tile__flag for a
+                status/prerequisite; the real CTA href + verb.
+             4. Add a .source link only for browser apps whose repo isn't
+                obvious from the CTA. New links stay plain crawlable hrefs
+                so the monthly link-check can find them.
+           ============================================================ -->
+
+      <section class="bank" data-reveal aria-labelledby="bank-prep">
+        <div class="bank__head">
+          <span class="bank__index" aria-hidden="true">01</span>
+          <h2 class="bank__title" id="bank-prep">Prep &amp; planning</h2>
+          <span class="bank__when">before the raid</span>
         </div>
+        <ul class="bank__list">
 
-        <p class="sr-only" role="status" aria-live="polite" data-result-count></p>
-
-        <div class="card-grid">
-
-          <!-- Tool 1 — ArkGrid Optimizer (in-browser web app) -->
-          <article class="card" data-kind="optimizer">
-            <div class="card__top">
-              <span class="card__icon" aria-hidden="true">
-                <!-- grid / node motif -->
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
-                  <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
-                  <path d="M10 6.5h4M6.5 10v4M17.5 10v4M10 17.5h4"/>
-                </svg>
-              </span>
-              <ul class="pills" aria-label="Tool details">
-                <li class="pill pill--kind">Optimizer</li>
-                <li class="pill">Browser</li>
-                <li class="pill">All regions</li>
-              </ul>
+          <!-- ArkGrid Optimizer — in-browser web app -->
+          <li class="tile" data-mode="open" data-reveal>
+            <span class="lamp" aria-hidden="true">
+              <!-- grid / node motif -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+                <path d="M10 6.5h4M6.5 10v4M17.5 10v4M10 17.5h4"/>
+              </svg>
+            </span>
+            <div class="tile__body">
+              <div class="tile__head">
+                <h3 class="tile__name">ArkGrid Optimizer</h3>
+                <span class="tile__spec"><b>Open now</b> · Browser · All regions</span>
+              </div>
+              <p class="tile__line">
+                Plan your Ark Grid — screen recognition reads the gems you own, then
+                advises the best fusing, cutting, and what to farm next.
+              </p>
+              <p class="tile__flag tile__flag--caution">
+                <span class="tile__flag-label">Status</span>
+                <span class="tile__flag-val">Winding down — retires once Lost&nbsp;Ark ships built-in Ark Grid optimization.</span>
+              </p>
             </div>
-            <h3 class="card__title">ArkGrid Optimizer</h3>
-            <p class="card__blurb">
-              Plan and optimize your Ark Grid: screen recognition reads your gems and
-              advises the best fusing and cutting.
-            </p>
-            <a class="btn" href="https://shotgun175.github.io/LostArk-ArkGrid-Optimizer/">
-              Open tool
-              <svg class="btn__arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-          </article>
-
-          <!-- Tool 2 — Raid Mech Announcer (Windows desktop overlay, Tauri) -->
-          <article class="card" data-kind="overlay">
-            <div class="card__top">
-              <span class="card__icon" aria-hidden="true">
-                <!-- broadcast / alert motif -->
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 3v6"/><circle cx="12" cy="12" r="2.5"/>
-                  <path d="M6.5 6.5a8 8 0 0 0 0 11M17.5 6.5a8 8 0 0 1 0 11"/>
-                  <path d="M9 9a4 4 0 0 0 0 6M15 9a4 4 0 0 1 0 6"/>
-                </svg>
-              </span>
-              <ul class="pills" aria-label="Tool details">
-                <li class="pill pill--kind">Overlay</li>
-                <li class="pill">Windows</li>
-                <li class="pill">All regions</li>
-              </ul>
+            <div class="tile__actions">
+              <a class="cta" href="https://shotgun175.github.io/LostArk-ArkGrid-Optimizer/">
+                Open tool
+                <svg class="cta__arrow" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="source" href="https://github.com/shotgun175/LostArk-ArkGrid-Optimizer">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.93.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+                Source
+              </a>
             </div>
-            <h3 class="card__title">Raid Mech Announcer</h3>
-            <p class="card__blurb">
-              Lightweight raid overlay that announces upcoming mechanics by HP threshold
-              or timer, so your party reacts early.
-            </p>
-            <a class="btn" href="https://github.com/shotgun175/Raid-Mech-Announcer/releases/latest">
-              Download
-              <svg class="btn__arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
-            </a>
-          </article>
+          </li>
 
-          <!-- Tool 3 — Dark Rotation Manager (Windows desktop overlay, PyInstaller .exe) -->
-          <article class="card" data-kind="overlay">
-            <div class="card__top">
-              <span class="card__icon" aria-hidden="true">
-                <!-- rotation / orbit motif -->
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/><circle cx="12" cy="12" r="2.2"/>
-                </svg>
-              </span>
-              <ul class="pills" aria-label="Tool details">
-                <li class="pill pill--kind">Overlay</li>
-                <li class="pill">Windows</li>
-                <li class="pill">All regions</li>
-              </ul>
+          <!-- Bible Roster Updater — command-line automation -->
+          <li class="tile" data-mode="setup" data-reveal>
+            <span class="lamp" aria-hidden="true">
+              <!-- terminal prompt motif -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M13 15h4"/>
+              </svg>
+            </span>
+            <div class="tile__body">
+              <div class="tile__head">
+                <h3 class="tile__name">Bible Roster Updater</h3>
+                <span class="tile__spec"><b>Set up</b> · Command line · NA / EU</span>
+              </div>
+              <p class="tile__line">
+                Pulls your lostark.bible rosters and writes every raid-eligible character
+                straight to a Google Sheet — run it once a raid week.
+              </p>
             </div>
-            <h3 class="card__title">Dark Rotation Manager</h3>
-            <p class="card__blurb">
-              Coordinates dark grenade throws across your party with an on-screen rotation,
-              so nobody wastes a cooldown mid-raid.
-            </p>
-            <a class="btn" href="https://github.com/shotgun175/Dark-Rotation-Manager/releases/latest">
-              Download
-              <svg class="btn__arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
-            </a>
-          </article>
+            <div class="tile__actions">
+              <a class="cta" href="https://github.com/shotgun175/LostArk-Bible-Roster-Updater">
+                View on GitHub
+                <svg class="cta__arrow" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </div>
+          </li>
 
-          <!-- Tool 4 — Bible Roster Updater (command-line automation) -->
-          <article class="card" data-kind="automation">
-            <div class="card__top">
-              <span class="card__icon" aria-hidden="true">
-                <!-- terminal prompt motif -->
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M13 15h4"/>
-                </svg>
-              </span>
-              <ul class="pills" aria-label="Tool details">
-                <li class="pill pill--kind">Automation</li>
-                <li class="pill">Command line</li>
-                <li class="pill">NA / EU</li>
-              </ul>
-            </div>
-            <h3 class="card__title">Bible Roster Updater</h3>
-            <p class="card__blurb">
-              Pulls your lostark.bible rosters and writes raid-eligible characters straight
-              to a Google Sheet for fast raid planning.
-            </p>
-            <a class="btn" href="https://github.com/shotgun175/LostArk-Bible-Roster-Updater">
-              View on GitHub
-              <svg class="btn__arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-          </article>
+        </ul>
+      </section>
 
-          <!-- Tool 5 — Cash Shop Value (in-browser web app) -->
-          <article class="card" data-kind="economy">
-            <div class="card__top">
-              <span class="card__icon" aria-hidden="true">
-                <!-- coin / dollar motif -->
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="9"/>
-                  <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
-                  <path d="M12 18V6"/>
-                </svg>
-              </span>
-              <ul class="pills" aria-label="Tool details">
-                <li class="pill pill--kind">Economy Math</li>
-                <li class="pill">Browser</li>
-                <li class="pill">NA / EU</li>
-              </ul>
+      <section class="bank" data-reveal aria-labelledby="bank-raid">
+        <div class="bank__head">
+          <span class="bank__index" aria-hidden="true">02</span>
+          <h2 class="bank__title" id="bank-raid">In-raid overlays</h2>
+          <span class="bank__when">during the pull</span>
+        </div>
+        <ul class="bank__list">
+
+          <!-- Raid Mech Announcer — Windows desktop overlay -->
+          <li class="tile" data-mode="download" data-reveal>
+            <span class="lamp" aria-hidden="true">
+              <!-- broadcast / alert motif -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3v6"/><circle cx="12" cy="12" r="2.5"/>
+                <path d="M6.5 6.5a8 8 0 0 0 0 11M17.5 6.5a8 8 0 0 1 0 11"/>
+                <path d="M9 9a4 4 0 0 0 0 6M15 9a4 4 0 0 1 0 6"/>
+              </svg>
+            </span>
+            <div class="tile__body">
+              <div class="tile__head">
+                <h3 class="tile__name">Raid Mech Announcer</h3>
+                <span class="tile__spec"><b>Download</b> · Windows · All regions</span>
+              </div>
+              <p class="tile__line">
+                Calls raid mechanics from boss HP thresholds and from-pull timers on an
+                always-on-top overlay, so your whole party reacts early.
+              </p>
+              <p class="tile__flag tile__flag--caution">
+                <span class="tile__flag-label">Needs</span>
+                <span class="tile__flag-val">LOA&nbsp;Logs installed — the overlay reads boss HP from it and won't start without it.</span>
+              </p>
             </div>
-            <h3 class="card__title">Cash Shop Value</h3>
-            <p class="card__blurb">
-              Live NA/EU market prices to value cash-shop packs in gold and compare
-              them against the exchange.
-            </p>
-            <a class="btn" href="https://shotgun175.github.io/LostArk-Cash-Shop-Value/">
-              Open tool
-              <svg class="btn__arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-          </article>
+            <div class="tile__actions">
+              <a class="cta" href="https://github.com/shotgun175/Raid-Mech-Announcer/releases/latest">
+                Download
+                <svg class="cta__arrow" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+              </a>
+            </div>
+          </li>
+
+          <!-- Dark Rotation Manager — Windows desktop overlay -->
+          <li class="tile" data-mode="download" data-reveal>
+            <span class="lamp" aria-hidden="true">
+              <!-- rotation / orbit motif -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/><circle cx="12" cy="12" r="2.2"/>
+              </svg>
+            </span>
+            <div class="tile__body">
+              <div class="tile__head">
+                <h3 class="tile__name">Dark Rotation Manager</h3>
+                <span class="tile__spec"><b>Download</b> · Windows · All regions</span>
+              </div>
+              <p class="tile__line">
+                Coordinates dark grenade throws across your party on a shared on-screen
+                rotation, so nobody wastes a cooldown mid-pull.
+              </p>
+            </div>
+            <div class="tile__actions">
+              <a class="cta" href="https://github.com/shotgun175/Dark-Rotation-Manager/releases/latest">
+                Download
+                <svg class="cta__arrow" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+              </a>
+            </div>
+          </li>
+
+        </ul>
+      </section>
+
+      <section class="bank" data-reveal aria-labelledby="bank-econ">
+        <div class="bank__head">
+          <span class="bank__index" aria-hidden="true">03</span>
+          <h2 class="bank__title" id="bank-econ">Spending &amp; economy</h2>
+          <span class="bank__when">between raids</span>
+        </div>
+        <ul class="bank__list">
+
+          <!-- Cash Shop Value — in-browser web app -->
+          <li class="tile" data-mode="open" data-reveal>
+            <span class="lamp" aria-hidden="true">
+              <!-- coin / dollar motif -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
+                <path d="M12 18V6"/>
+              </svg>
+            </span>
+            <div class="tile__body">
+              <div class="tile__head">
+                <h3 class="tile__name">Cash Shop Value</h3>
+                <span class="tile__spec"><b>Open now</b> · Browser · NA / EU</span>
+              </div>
+              <p class="tile__line">
+                Prices cash-shop packs in gold from live NA/EU markets, and checks them
+                against the crystal exchange.
+              </p>
+            </div>
+            <div class="tile__actions">
+              <a class="cta" href="https://shotgun175.github.io/LostArk-Cash-Shop-Value/">
+                Open tool
+                <svg class="cta__arrow" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="source" href="https://github.com/shotgun175/LostArk-Cash-Shop-Value">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.93.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+                Source
+              </a>
+            </div>
+          </li>
 
           <!-- ============================================================
-               CARD TEMPLATE — copy this whole <article> to add a 6th tool.
-               1. Set data-kind   to: optimizer | overlay | automation | economy
-                  (this drives the accent colour and the filter buttons).
-               2. Write the 2nd and 3rd pills (platform / region) as plain
-                  <li> text — nothing renders them from attributes.
-               3. Swap the <svg> icon, the title, the 12–18 word blurb,
-                  the three pill labels, the link href, and the button text
-                  ("Open tool" / "Download" / "View on GitHub").
-               If you add a new data-kind value, add a matching rule in
-               styles.css (search "data-kind") and a chip in the .toolbar above.
+               TILE TEMPLATE — copy this whole <li> to add a 6th tool.
+               Set data-mode (open | download | setup), swap the lamp glyph,
+               name, spec line, blurb, optional .tile__flag, and CTA href.
+               If you add a new data-mode, add a matching accent rule in
+               styles.css (search "data-mode") and a legend entry above.
 
-          <article class="card" data-kind="optimizer">
-            <div class="card__top">
-              <span class="card__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="8"/>
-                </svg>
-              </span>
-              <ul class="pills" aria-label="Tool details">
-                <li class="pill pill--kind">Kind</li>
-                <li class="pill">Platform</li>
-                <li class="pill">Region</li>
-              </ul>
+          <li class="tile" data-mode="open" data-reveal>
+            <span class="lamp" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="8"/>
+              </svg>
+            </span>
+            <div class="tile__body">
+              <div class="tile__head">
+                <h3 class="tile__name">New Tool Name</h3>
+                <span class="tile__spec"><b>Open now</b> · Platform · Region</span>
+              </div>
+              <p class="tile__line">
+                A one-sentence blurb, roughly twelve to eighteen words, describing
+                what the tool does and who it helps.
+              </p>
             </div>
-            <h3 class="card__title">New Tool Name</h3>
-            <p class="card__blurb">
-              A one-sentence blurb, roughly twelve to eighteen words, describing
-              what the tool does and who it helps.
-            </p>
-            <a class="btn" href="https://example.com/">
-              Open tool
-              <svg class="btn__arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-          </article>
+            <div class="tile__actions">
+              <a class="cta" href="https://example.com/">
+                Open tool
+                <svg class="cta__arrow" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </div>
+          </li>
 
                ============================================================ -->
 
-        </div>
+        </ul>
       </section>
+
     </main>
 
     <footer class="site-footer" role="contentinfo">
@@ -276,7 +370,8 @@
     </footer>
   </div>
 
-  <!-- Optional progressive enhancement. The page is fully functional without it. -->
+  <!-- Optional progressive enhancement: scroll-reveal only. Page is fully
+       usable and grouped without it. -->
   <script src="enhance.js" defer></script>
 </body>
 </html>
