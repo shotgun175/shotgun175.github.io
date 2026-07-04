@@ -17,3 +17,6 @@ desktop.ini
 # Local scratch
 *.log
 tmp/
+
+# Visual-verify preview screenshots (local only, never part of the site)
+/deck-*.png
