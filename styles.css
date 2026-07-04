@@ -1,5 +1,5 @@
 /* ============================================================
-   Lost Ark Tools — design system
+   Lost Ark Tools: design system
    Concept: an operable "command deck" on obsidian. Tools group into
    three raid-timeline banks; each wears a run-mode lamp whose COLOR
    encodes how you engage it (Open now / Download / Set up). An
@@ -13,7 +13,7 @@
   /* --- palette ---
      CANONICAL Lost Ark Tools brand palette. The no-build setup means these
      hexes are also hardcoded in: assets/og-image.html, snippets/hub-badge.html,
-     and favicon.svg (plus the badge copies embedded in the tool repos — see
+     and favicon.svg (plus the badge copies embedded in the tool repos; see
      README "Hub badge embeds"). Change a color here -> update those together. */
   --bg:        #0a0b13;   /* obsidian */
   --bg-2:      #0d0f1d;
@@ -22,9 +22,9 @@
   --line:      rgba(170, 178, 220, 0.14);
   --line-soft: rgba(170, 178, 220, 0.08);
 
-  --ink:    #ece8df;      /* warm parchment — primary text */
-  --muted:  #aab0d2;      /* cool grey-violet — secondary text */
-  --faint:  #9298bd;      /* tertiary / footnotes — kept >=4.5:1 on the tile gradient */
+  --ink:    #ece8df;      /* warm parchment: primary text */
+  --muted:  #aab0d2;      /* cool grey-violet: secondary text */
+  --faint:  #9298bd;      /* tertiary / footnotes: kept >=4.5:1 on the tile gradient */
 
   --gold:   #f0b94d;      /* the Ark's light */
   --astral: #54d8d2;      /* astral cyan */
@@ -38,7 +38,7 @@
   --download: var(--gold);     /* Windows build */
   --setup:    var(--violet);   /* clone & configure */
   --live:     var(--emerald);  /* operational pip */
-  --caution:  #e0836f;         /* heads-up notes only — UI accent, NOT part of the
+  --caution:  #e0836f;         /* heads-up notes only; UI accent, NOT part of the
                                   brand mark (unused in favicon/og/badge), so no sync */
 
   /* default accent; overridden per tile by data-mode */
@@ -150,7 +150,7 @@ a { color: var(--astral); }
   margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
 }
 
-/* slow-drifting ember glow behind the wordmark — the ambient "power on" */
+/* slow-drifting ember glow behind the wordmark: the ambient "power on" */
 .masthead__glow {
   position: absolute;
   top: -6rem; left: -4rem;
@@ -344,8 +344,9 @@ a { color: var(--astral); }
     inset 0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent),
     0 0 16px -3px color-mix(in srgb, var(--accent) 65%, transparent);
 }
-/* open-now lamps read as "online": a steady soft glow */
-.tile[data-mode="open"] .lamp,
+/* every lamp carries a steady soft glow in its own accent; this is the resting
+   state (reduced motion); the breathe animation overrides it otherwise */
+.tile .lamp,
 .legend [data-mode="open"] .lamp--mini {
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 14%, transparent),
               0 0 10px -2px color-mix(in srgb, var(--accent) 50%, transparent);
@@ -476,8 +477,8 @@ a { color: var(--astral); }
     50%      { transform: translate(2rem, 0.6rem) scale(1.06); opacity: 1; }
   }
 
-  /* open-now lamps breathe */
-  .tile[data-mode="open"] .lamp { animation: breathe 3.6s ease-in-out infinite; }
+  /* every lamp breathes in its own accent color */
+  .tile .lamp { animation: breathe 3.6s ease-in-out infinite; }
   @keyframes breathe {
     0%, 100% { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 14%, transparent),
                            0 0 8px -3px color-mix(in srgb, var(--accent) 45%, transparent); }
@@ -512,6 +513,7 @@ a { color: var(--astral); }
   .masthead__top { align-items: flex-start; }
   .tile {
     grid-template-columns: auto 1fr;
+    align-items: start; /* top-align the lamp against the taller body */
     gap: 0.4rem 0.95rem;
   }
   .tile__actions {

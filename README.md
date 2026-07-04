@@ -13,9 +13,9 @@ This repository is the GitHub Pages root for the `shotgun175` account
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | The hub page: header, a grid of tool cards, footer. |
-| `styles.css` | The design system (palette, type, responsive grid, focus + reduced-motion). |
-| `enhance.js` | Optional filter-by-type enhancement. The page works fully without it. |
+| `index.html` | The hub page: masthead, three timeline banks of tool tiles, footer. |
+| `styles.css` | The design system (palette, type, run-mode lamps, responsive layout, focus + reduced-motion). |
+| `enhance.js` | Optional scroll-reveal enhancement. The page works fully without it. |
 | `favicon.svg` | Site icon (the Ark-Grid lattice mark). |
 | `favicon-32.png` | 32x32 raster fallback for browsers/crawlers that ignore SVG icons. |
 | `og-image.png` | 1200x630 social preview image. |
@@ -34,26 +34,36 @@ This repository is the GitHub Pages root for the `shotgun175` account
 | Bible Roster Updater | Command-line automation | GitHub repository |
 | Cash Shop Value | In-browser web app | https://shotgun175.github.io/LostArk-Cash-Shop-Value/ |
 
-## How to add a tool card
+## How to add a tool
 
-1. Open `index.html` and find the comment block labelled `CARD TEMPLATE`
-   (just after the last live card).
-2. Copy the entire commented `<article class="card"> ... </article>` block and
-   paste it into the `.card-grid` as a real (uncommented) card.
+1. Open `index.html` and find the comment block labelled `TILE TEMPLATE`
+   (just after the last live tile, inside the third bank).
+2. Copy the entire commented `<li class="tile"> ... </li>` block and paste it,
+   uncommented, into the `.bank__list` of whichever timeline bank the tool belongs
+   to: `01 Prep & planning` (before the raid), `02 In-raid overlays` (during the
+   pull), or `03 Spending & economy` (between raids).
 3. Edit these fields:
-   - `data-kind` — one of `optimizer`, `overlay`, `automation`, `economy`. This drives the
-     card's accent colour and the filter buttons.
-   - The 2nd and 3rd pills (platform / region) — plain `<li>` text inside the
-     card; nothing renders them from attributes.
-   - The `<svg>` icon, the `<h3>` title, the 12-18 word blurb, the three pill
-     labels, the link `href`, and the button text
-     (`Open tool` / `Download` / `View on GitHub`).
-4. Adding a brand-new `data-kind`? Add a matching accent rule in `styles.css`
-   (search for `data-kind`) and a `<button>` chip in the `.toolbar` in
+   - `data-mode`: one of `open` (runs in the browser), `download` (Windows build),
+     or `setup` (clone and configure). This drives the lamp colour, the spec
+     accent, and the CTA colour, and it is taught once in the masthead legend.
+   - The lamp `<svg>`: the tool's own glyph. The colour already encodes the run
+     mode, so the glyph just says which tool it is.
+   - The `<h3 class="tile__name">` title, the spec line (`MODE · PLATFORM ·
+     REGION`), the one-line blurb, and the CTA `href` + verb (`Open tool` /
+     `Download` / `View on GitHub`).
+   - Optional: a labelled `.tile__flag` (`Status`, `Needs`, ...) for a wind-down
+     notice or a hard prerequisite; add `tile__flag--caution` for the orange
+     treatment.
+   - Optional: a `.source` link beside the CTA, for browser apps whose repo is not
+     obvious from the CTA.
+   - Keep `data-reveal` on the `<li>` so the scroll-reveal enhancement animates it
+     in (it stays visible with JavaScript off).
+4. Adding a brand-new `data-mode`? Add a matching `--accent` rule in `styles.css`
+   (search for `data-mode`) and a `<li>` entry in the `.legend` list in
    `index.html`.
 
-That is the whole process - no build, no install. Open `index.html` in a browser
-to preview.
+That is the whole process, no build, no install. Serve the folder (see below) to
+preview.
 
 ## Local preview
 
@@ -75,7 +85,7 @@ file, open it in a browser sized to exactly 1200x630, and export a 1200x630 PNG
 
 Deployment needs no workflow - it is plain static files. (The repository does
 carry one scheduled workflow, `.github/workflows/link-check.yml`, which checks
-the card links monthly for rot; it never builds or publishes anything.)
+the tool links monthly for rot; it never builds or publishes anything.)
 
 1. Push the default branch to `github.com/shotgun175/shotgun175.github.io`.
 2. In the repository: **Settings -> Pages -> Build and deployment**.

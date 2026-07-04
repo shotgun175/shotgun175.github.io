@@ -14,15 +14,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Check every card link in index.html
+      - name: Check every tool link in index.html
         run: |
           set -euo pipefail
-          # Pull the card action hrefs straight from the page so the list
+          # Pull the tile CTA and Source hrefs straight from the page so the list
           # cannot drift from what the hub actually links. example.com is the
-          # commented-out CARD TEMPLATE's placeholder, not a real card.
-          mapfile -t urls < <(grep -oP '(?<=class="btn" href=")[^"]+' index.html | grep -v '^https://example\.com')
-          echo "Checking ${#urls[@]} card links"
-          if [ "${#urls[@]}" -eq 0 ]; then echo "No card links found — selector drift?"; exit 1; fi
+          # commented-out TILE TEMPLATE's placeholder, not a real tool.
+          mapfile -t urls < <(grep -oP '(?<=class="cta" href=")[^"]+|(?<=class="source" href=")[^"]+' index.html | grep -v '^https://example\.com')
+          echo "Checking ${#urls[@]} tool links"
+          if [ "${#urls[@]}" -eq 0 ]; then echo "No tool links found (selector drift?)"; exit 1; fi
           fail=0
           for url in "${urls[@]}"; do
             code=$(curl -s -o /dev/null -w '%{http_code}' --location --max-time 30 "$url") || code=000
