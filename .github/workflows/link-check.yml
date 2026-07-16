@@ -1,31 +1,139 @@
 name: Link check
 
 # The hub's only job is linking out, and its only silent failure mode is link
-# rot — a dead "Open tool" / "Download" button with no signal to the owner.
-# Monthly check (plus on-demand) that every card href still resolves.
-# Deployment still needs no build; this workflow never publishes anything.
+# rot: a dead "Open tool" / "Download" button with no signal to the owner.
+# Checks every tile CTA and Source link in index.html monthly, on demand, and
+# on any push or PR that touches index.html (main deploys straight to
+# production, so a bad href goes live the moment it lands). This workflow
+# never builds or publishes anything.
+# push is main-only so a PR edit does not run the same sweep twice (the
+# pull_request event already covers the branch); both watch styles.css too,
+# because the data-mode accent rules validated below live there, and the
+# workflow itself, so a broken edit to this file cannot land silently.
 on:
   workflow_dispatch:
+  push:
+    branches: ['main']
+    paths: ['index.html', 'styles.css', '.github/workflows/link-check.yml']
+  pull_request:
+    paths: ['index.html', 'styles.css', '.github/workflows/link-check.yml']
   schedule:
     - cron: '23 7 3 * *' # monthly
+
+# The job only reads the repo and curls; never hand it a writable token.
+permissions:
+  contents: read
 
 jobs:
   check-links:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - name: Check every tool link in index.html
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+
+      - name: Extract and validate tile links
+        # Comment-aware, attribute-order-independent extraction (the commented
+        # TILE TEMPLATE is skipped natively, no example.com filter needed),
+        # plus structural guards: every live tile must carry exactly one CTA,
+        # and every tile's data-mode must be taught by the masthead legend AND
+        # have a .tile[data-mode] accent rule in styles.css (the three-place
+        # coupling the docs describe). A guard failing means the files drifted
+        # from the markup this check understands.
         run: |
           set -euo pipefail
-          # Pull the tile CTA and Source hrefs straight from the page so the list
-          # cannot drift from what the hub actually links. example.com is the
-          # commented-out TILE TEMPLATE's placeholder, not a real tool.
-          mapfile -t urls < <(grep -oP '(?<=class="cta" href=")[^"]+|(?<=class="source" href=")[^"]+' index.html | grep -v '^https://example\.com')
+          python3 - > urls.txt <<'PY'
+          import re
+          import sys
+          from html.parser import HTMLParser
+
+          class Tiles(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.in_tile = False
+                  self.in_legend = False
+                  self.tiles = []          # per tile: {'mode': str, 'ctas': int}
+                  self.urls = []
+                  self.legend_modes = set()
+
+              def handle_starttag(self, tag, attrs):
+                  a = dict(attrs)
+                  classes = (a.get('class') or '').split()
+                  if tag == 'ul' and 'legend' in classes:
+                      self.in_legend = True
+                  elif tag == 'li' and self.in_legend and a.get('data-mode'):
+                      self.legend_modes.add(a['data-mode'])
+                  elif tag == 'li' and 'tile' in classes:
+                      self.in_tile = True
+                      self.tiles.append({'mode': a.get('data-mode', ''), 'ctas': 0})
+                  elif tag == 'a' and self.in_tile and ('cta' in classes or 'source' in classes):
+                      self.urls.append(a.get('href', ''))
+                      if 'cta' in classes:
+                          self.tiles[-1]['ctas'] += 1
+
+              def handle_endtag(self, tag):
+                  if tag == 'li' and self.in_tile:
+                      self.in_tile = False
+                  elif tag == 'ul' and self.in_legend:
+                      self.in_legend = False
+
+          p = Tiles()
+          p.feed(open('index.html', encoding='utf-8').read())
+          accent_modes = set(re.findall(r'\.tile\[data-mode="([^"]+)"\]',
+                                        open('styles.css', encoding='utf-8').read()))
+
+          errors = []
+          if not p.tiles:
+              errors.append('no live tiles found (markup drift?)')
+          if not p.legend_modes:
+              errors.append('no legend modes found (markup drift?)')
+          if not accent_modes:
+              errors.append('no .tile[data-mode] accent rules found in styles.css (drift?)')
+          for i, t in enumerate(p.tiles, 1):
+              if t['ctas'] != 1:
+                  errors.append(f"tile {i} has {t['ctas']} CTA links, expected exactly 1")
+              if t['mode'] not in p.legend_modes:
+                  errors.append(f"tile {i} data-mode {t['mode']!r} is not taught by the legend {sorted(p.legend_modes)}")
+              if t['mode'] not in accent_modes:
+                  errors.append(f"tile {i} data-mode {t['mode']!r} has no .tile[data-mode] accent rule in styles.css {sorted(accent_modes)}")
+          for u in p.urls:
+              if not u.startswith('https://'):
+                  errors.append(f'non-https tile link: {u!r}')
+          if errors:
+              print('\n'.join(errors), file=sys.stderr)
+              sys.exit(1)
+          print(f'{len(p.tiles)} tiles, {len(p.urls)} links', file=sys.stderr)
+          print('\n'.join(p.urls))
+          PY
+
+      - name: Check every extracted link
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # tr guards against CRLF line endings when the block is run locally
+          # on Windows (git-bash); the runner's python3 writes plain LF.
+          mapfile -t urls < <(tr -d '\r' < urls.txt)
           echo "Checking ${#urls[@]} tool links"
-          if [ "${#urls[@]}" -eq 0 ]; then echo "No tool links found (selector drift?)"; exit 1; fi
           fail=0
           for url in "${urls[@]}"; do
-            code=$(curl -s -o /dev/null -w '%{http_code}' --location --max-time 30 "$url") || code=000
+            probe="$url"; auth=()
+            # A releases/latest PAGE returns HTTP 200 even for a repo with zero
+            # releases, so a dead Download button would pass; the API 404s in
+            # that case, so probe the API for those links instead. Match on the
+            # trailing-slash-stripped form so a slashed href cannot dodge the
+            # rewrite; auth only when a token exists (empty Bearer would 401,
+            # and local runs outside Actions have no token).
+            case "${url%/}" in
+              https://github.com/*/releases/latest)
+                repo="${url%/}"; repo="${repo#https://github.com/}"; repo="${repo%/releases/latest}"
+                probe="https://api.github.com/repos/${repo}/releases/latest"
+                if [ -n "${GH_TOKEN:-}" ]; then auth=(-H "Authorization: Bearer ${GH_TOKEN}"); fi
+                ;;
+            esac
+            code=$(curl -s -o /dev/null -w '%{http_code}' --location --max-time 30 \
+                   --retry 3 --retry-delay 5 --retry-all-errors --retry-max-time 60 \
+                   "${auth[@]}" "$probe") || code=000
             echo "$code  $url"
             if [ "$code" -lt 200 ] || [ "$code" -ge 400 ]; then fail=1; fi
           done

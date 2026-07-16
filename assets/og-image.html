@@ -61,7 +61,7 @@
     font-size: 30px;
     font-weight: 300;
     color: #aab0d2;
-    max-width: 30ch;
+    max-width: 46ch;
   }
   .pills {
     display: flex;
@@ -72,18 +72,27 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
+  /* Pills mirror the page's three timeline banks. Deliberately neutral:
+     gold/astral/violet encode run modes on the site now, so reusing them
+     as topic tags here would contradict the masthead legend. */
   .pill {
     padding: 9px 18px;
     border-radius: 999px;
-    border: 1px solid;
+    border: 1px solid rgba(170,178,220,0.35);
+    color: #ece8df;
+    background: rgba(170,178,220,0.08);
   }
-  .pill.gold   { color: #f0b94d; border-color: rgba(240,185,77,0.5);  background: rgba(240,185,77,0.12); }
-  .pill.astral { color: #54d8d2; border-color: rgba(84,216,210,0.5);  background: rgba(84,216,210,0.12); }
-  .pill.violet { color: #a394f5; border-color: rgba(163,148,245,0.5); background: rgba(163,148,245,0.12); }
+  .pill b {
+    color: #9298bd;
+    font-weight: 500;
+    margin-right: 4px;
+  }
+  /* top-right corner stamp, opposite the eyebrow; keeps clear of the pills
+     row, which now spans most of the bottom edge */
   .url {
     position: absolute;
     right: 60px;
-    bottom: 52px;
+    top: 58px;
     font-family: "IBM Plex Mono", monospace;
     font-size: 20px;
     letter-spacing: 0.08em;
@@ -92,13 +101,13 @@
 </style>
 </head>
 <body>
-  <div class="eyebrow">shotgun175 &middot; Lost Ark raiding toolkit</div>
+  <div class="eyebrow">shotgun175 &middot; Lost Ark raiding kit</div>
   <div class="title">Lost&nbsp;Ark Tools</div>
-  <div class="lede">Ark Grid optimizer, raid overlays, and roster automation in one place.</div>
+  <div class="lede">An Ark Grid optimizer, raid overlays, roster automation, and cash-shop math in one place.</div>
   <div class="pills">
-    <span class="pill gold">Optimizer</span>
-    <span class="pill astral">Overlays</span>
-    <span class="pill violet">Automation</span>
+    <span class="pill"><b>01</b> Prep &amp; planning</span>
+    <span class="pill"><b>02</b> In-raid overlays</span>
+    <span class="pill"><b>03</b> Spending &amp; economy</span>
   </div>
   <div class="url">shotgun175.github.io</div>
 </body>

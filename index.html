@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
+
+  <!-- Defense-in-depth: everything the page loads is same-origin (plus the
+       data: film-grain texture in styles.css). No inline scripts or styles
+       exist, so no hashes are needed; keep it that way. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; script-src 'self'; base-uri 'none'; form-action 'none'" />
 
   <!-- ============================================================
        Lost Ark Tools: static hub page. No framework, no build.
@@ -43,20 +48,21 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
-  <!-- Fonts: distinctive display serif + readable text serif + console mono.
-       Fallback stacks keep the page legible if the request fails. -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- Weights limited to what styles.css actually uses: Cinzel 600/700,
-       mono 400/500, Spectral 300/400 (no italics). -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Spectral:wght@300;400&display=swap" />
+  <!-- Fonts are self-hosted (fonts/, declared via @font-face in styles.css),
+       so first paint never waits on a third-party origin and no visitor IP
+       leaks to a font CDN. Fallback stacks keep the page legible if a file
+       fails. Preload the two faces first paint uses: Cinzel (wordmark, bank
+       and tile titles) and Spectral 300 (lede and blurbs). -->
+  <link rel="preload" href="fonts/cinzel-600-700.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/spectral-300.woff2" as="font" type="font/woff2" crossorigin />
 
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- Flash-free progressive enhancement: mark JS on before first paint so the
-       scroll-reveal can pre-hide tiles. With JS disabled this never runs, the
-       .no-js class stays, and every tile renders fully visible. -->
-  <script>document.documentElement.classList.remove("no-js");document.documentElement.classList.add("js");</script>
+  <!-- Flash-free progressive enhancement: this tiny same-origin script stamps
+       <html> with .reveal-ready before first paint, and styles.css only
+       pre-hides tiles under that class. If it is disabled, blocked, or fails
+       to load, the class never appears and every tile renders fully visible. -->
+  <script src="enhance.js"></script>
 </head>
 
 <body>
@@ -67,7 +73,7 @@
       <span class="masthead__glow" aria-hidden="true"></span>
 
       <div class="masthead__top">
-        <span class="brand">
+        <div class="brand">
           <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
             <rect width="32" height="32" rx="7" fill="#0a0b13"/>
             <rect x="0.75" y="0.75" width="30.5" height="30.5" rx="6.25" fill="none" stroke="#54d8d2" stroke-opacity="0.28"/>
@@ -82,7 +88,7 @@
             <circle cx="16" cy="16" r="4.6" fill="none" stroke="#fff7e6" stroke-opacity="0.5"/>
           </svg>
           <h1 class="wordmark">Lost&nbsp;Ark Tools</h1>
-        </span>
+        </div>
         <p class="masthead__eyebrow">shotgun175 · Lost Ark raiding kit</p>
       </div>
 
@@ -114,7 +120,7 @@
         </ul>
         <p class="status">
           <span class="status__pip" aria-hidden="true"></span>
-          <span title="Every outbound tool link is verified monthly by an automated link-check job">All links checked monthly</span>
+          <span>Tool links CI-checked monthly</span>
         </p>
       </div>
     </header>
@@ -370,8 +376,5 @@
     </footer>
   </div>
 
-  <!-- Optional progressive enhancement: scroll-reveal only. Page is fully
-       usable and grouped without it. -->
-  <script src="enhance.js" defer></script>
 </body>
 </html>
