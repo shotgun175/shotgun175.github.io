@@ -19,5 +19,10 @@ CLAUDE.local.md
 *.log
 tmp/
 
+# Local planning/audit notes. NEVER track anything in here: this repo's root
+# is the live site, so every committed file is served publicly, and these
+# notes can contain private context that must not be published.
+/docs/
+
 # Visual-verify preview screenshots (local only, never part of the site)
 /deck-*.png
