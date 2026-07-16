@@ -3,11 +3,17 @@
  * The page is fully usable without this file. Every tile is visible by default;
  * an inline <head> script flips <html> from .no-js to .js before first paint, and
  * the stylesheet only pre-hides [data-reveal] elements under `.js` + no
- * reduced-motion preference. So with JS disabled — or reduced motion requested —
- * nothing is ever hidden. No dependencies, no tracking.
+ * reduced-motion preference. So with JS disabled, or reduced motion requested,
+ * nothing is ever hidden. If this file itself fails to load after the inline
+ * script ran, a CSS rescue animation force-shows everything after 2.5s (see
+ * .reveal-ready in styles.css). No dependencies, no tracking.
  */
 (function () {
   "use strict";
+
+  // Cancel the CSS rescue timer first: styles.css force-shows [data-reveal]
+  // after 2.5s unless this class proves the reveal code actually ran.
+  document.documentElement.classList.add("reveal-ready");
 
   var items = Array.prototype.slice.call(document.querySelectorAll("[data-reveal]"));
   if (!items.length) return;

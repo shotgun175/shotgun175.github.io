@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
 
+  <!-- Defense-in-depth: everything the page loads is same-origin (plus the
+       data: film-grain texture in styles.css). The sha256 source is the hash
+       of the inline no-js/js script below; if that script changes AT ALL,
+       recompute the hash or the scroll-reveal silently dies (page stays
+       usable, but check the console for CSP violations after edits). -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; script-src 'self' 'sha256-9h4+QNjOt3CgNFpdn6iqbeII0Hyi4PqjGT1QhTZFYlc='; base-uri 'none'; form-action 'none'" />
+
   <!-- ============================================================
        Lost Ark Tools: static hub page. No framework, no build.
        Command deck: tools grouped into three raid-timeline banks,
@@ -43,13 +50,12 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
-  <!-- Fonts: distinctive display serif + readable text serif + console mono.
-       Fallback stacks keep the page legible if the request fails. -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- Weights limited to what styles.css actually uses: Cinzel 600/700,
-       mono 400/500, Spectral 300/400 (no italics). -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Spectral:wght@300;400&display=swap" />
+  <!-- Fonts are self-hosted (fonts/, declared via @font-face in styles.css),
+       so first paint never waits on a third-party origin and no visitor IP
+       leaks to a font CDN. Fallback stacks keep the page legible if a file
+       fails. Preload the Cinzel variable file: it draws the wordmark and every
+       bank/tile title. -->
+  <link rel="preload" href="fonts/cinzel-600-700.woff2" as="font" type="font/woff2" crossorigin />
 
   <link rel="stylesheet" href="styles.css" />
 
@@ -67,7 +73,7 @@
       <span class="masthead__glow" aria-hidden="true"></span>
 
       <div class="masthead__top">
-        <span class="brand">
+        <div class="brand">
           <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
             <rect width="32" height="32" rx="7" fill="#0a0b13"/>
             <rect x="0.75" y="0.75" width="30.5" height="30.5" rx="6.25" fill="none" stroke="#54d8d2" stroke-opacity="0.28"/>
@@ -82,7 +88,7 @@
             <circle cx="16" cy="16" r="4.6" fill="none" stroke="#fff7e6" stroke-opacity="0.5"/>
           </svg>
           <h1 class="wordmark">Lost&nbsp;Ark Tools</h1>
-        </span>
+        </div>
         <p class="masthead__eyebrow">shotgun175 · Lost Ark raiding kit</p>
       </div>
 
@@ -114,7 +120,7 @@
         </ul>
         <p class="status">
           <span class="status__pip" aria-hidden="true"></span>
-          <span title="Every outbound tool link is verified monthly by an automated link-check job">All links checked monthly</span>
+          <span>Tool links CI-checked monthly</span>
         </p>
       </div>
     </header>

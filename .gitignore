@@ -13,6 +13,7 @@ desktop.ini
 .claude/
 .cursor/
 .playwright-mcp/
+CLAUDE.local.md
 
 # Local scratch
 *.log
