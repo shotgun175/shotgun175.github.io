@@ -6,12 +6,17 @@ name: Link check
 # on any push or PR that touches index.html (main deploys straight to
 # production, so a bad href goes live the moment it lands). This workflow
 # never builds or publishes anything.
+# push is main-only so a PR edit does not run the same sweep twice (the
+# pull_request event already covers the branch); both watch styles.css too,
+# because the data-mode accent rules validated below live there, and the
+# workflow itself, so a broken edit to this file cannot land silently.
 on:
   workflow_dispatch:
   push:
-    paths: ['index.html']
+    branches: ['main']
+    paths: ['index.html', 'styles.css', '.github/workflows/link-check.yml']
   pull_request:
-    paths: ['index.html']
+    paths: ['index.html', 'styles.css', '.github/workflows/link-check.yml']
   schedule:
     - cron: '23 7 3 * *' # monthly
 
@@ -30,13 +35,15 @@ jobs:
       - name: Extract and validate tile links
         # Comment-aware, attribute-order-independent extraction (the commented
         # TILE TEMPLATE is skipped natively, no example.com filter needed),
-        # plus two structural guards: every live tile must carry exactly one
-        # CTA, and every tile's data-mode must be one the masthead legend
-        # teaches. Either guard failing means index.html drifted from the
-        # markup this check understands.
+        # plus structural guards: every live tile must carry exactly one CTA,
+        # and every tile's data-mode must be taught by the masthead legend AND
+        # have a .tile[data-mode] accent rule in styles.css (the three-place
+        # coupling the docs describe). A guard failing means the files drifted
+        # from the markup this check understands.
         run: |
           set -euo pipefail
           python3 - > urls.txt <<'PY'
+          import re
           import sys
           from html.parser import HTMLParser
 
@@ -72,17 +79,23 @@ jobs:
 
           p = Tiles()
           p.feed(open('index.html', encoding='utf-8').read())
+          accent_modes = set(re.findall(r'\.tile\[data-mode="([^"]+)"\]',
+                                        open('styles.css', encoding='utf-8').read()))
 
           errors = []
           if not p.tiles:
               errors.append('no live tiles found (markup drift?)')
           if not p.legend_modes:
               errors.append('no legend modes found (markup drift?)')
+          if not accent_modes:
+              errors.append('no .tile[data-mode] accent rules found in styles.css (drift?)')
           for i, t in enumerate(p.tiles, 1):
               if t['ctas'] != 1:
                   errors.append(f"tile {i} has {t['ctas']} CTA links, expected exactly 1")
               if t['mode'] not in p.legend_modes:
                   errors.append(f"tile {i} data-mode {t['mode']!r} is not taught by the legend {sorted(p.legend_modes)}")
+              if t['mode'] not in accent_modes:
+                  errors.append(f"tile {i} data-mode {t['mode']!r} has no .tile[data-mode] accent rule in styles.css {sorted(accent_modes)}")
           for u in p.urls:
               if not u.startswith('https://'):
                   errors.append(f'non-https tile link: {u!r}')
@@ -107,16 +120,20 @@ jobs:
             probe="$url"; auth=()
             # A releases/latest PAGE returns HTTP 200 even for a repo with zero
             # releases, so a dead Download button would pass; the API 404s in
-            # that case, so probe the API for those links instead.
-            case "$url" in
+            # that case, so probe the API for those links instead. Match on the
+            # trailing-slash-stripped form so a slashed href cannot dodge the
+            # rewrite; auth only when a token exists (empty Bearer would 401,
+            # and local runs outside Actions have no token).
+            case "${url%/}" in
               https://github.com/*/releases/latest)
-                repo="${url#https://github.com/}"; repo="${repo%/releases/latest}"
+                repo="${url%/}"; repo="${repo#https://github.com/}"; repo="${repo%/releases/latest}"
                 probe="https://api.github.com/repos/${repo}/releases/latest"
-                auth=(-H "Authorization: Bearer ${GH_TOKEN}")
+                if [ -n "${GH_TOKEN:-}" ]; then auth=(-H "Authorization: Bearer ${GH_TOKEN}"); fi
                 ;;
             esac
             code=$(curl -s -o /dev/null -w '%{http_code}' --location --max-time 30 \
-                   --retry 3 --retry-delay 5 --retry-all-errors "${auth[@]}" "$probe") || code=000
+                   --retry 3 --retry-delay 5 --retry-all-errors --retry-max-time 60 \
+                   "${auth[@]}" "$probe") || code=000
             echo "$code  $url"
             if [ "$code" -lt 200 ] || [ "$code" -ge 400 ]; then fail=1; fi
           done

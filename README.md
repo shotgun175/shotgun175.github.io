@@ -75,12 +75,16 @@ preview.
 
 ## Local preview
 
-No tooling required. Either double-click `index.html`, or serve the folder:
+No tooling required. Serve the folder:
 
 ```sh
 python -m http.server 8000
 # then open http://localhost:8000
 ```
+
+Double-clicking `index.html` works for a quick look, but some browsers
+restrict font loading from `file://`, so serve the folder for a faithful
+preview.
 
 ## Regenerating the social image
 
@@ -91,13 +95,12 @@ Chrome ignores relative ones):
 ```sh
 # 1. Render at exactly 1200x630, device scale 1 (git-bash shown; any Chromium works)
 "/c/Program Files (x86)/Google/Chrome/Application/chrome.exe" --headless \
-  "--screenshot=$(pwd -W)/og-render.png" --window-size=1200,630 \
+  "--screenshot=$(pwd -W)/og-image.png" --window-size=1200,630 \
   --force-device-scale-factor=1 --hide-scrollbars --virtual-time-budget=8000 \
   "file:///$(pwd -W)/assets/og-image.html"
 
-# 2. Compress to a 256-color palette PNG (needs Pillow), then drop the intermediate
-python -c "from PIL import Image; Image.open('og-render.png').convert('RGB').quantize(colors=256, dither=Image.Dither.FLOYDSTEINBERG).save('og-image.png', optimize=True)"
-rm og-render.png
+# 2. Compress it in place to a 256-color palette PNG (needs Pillow)
+python -c "from PIL import Image; Image.open('og-image.png').convert('RGB').quantize(colors=256, dither=Image.Dither.FLOYDSTEINBERG).save('og-image.png', optimize=True)"
 ```
 
 Keep the dimensions exact - the `og:image:width` / `og:image:height` meta tags
