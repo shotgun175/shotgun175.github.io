@@ -282,9 +282,6 @@ a { color: var(--astral); }
   text-transform: uppercase; letter-spacing: 0.08em;
   font-size: 0.72rem;
 }
-.legend [data-mode="open"]     { --accent: var(--open); }
-.legend [data-mode="download"] { --accent: var(--download); }
-.legend [data-mode="setup"]    { --accent: var(--setup); }
 .legend .lamp--mini { width: 26px; height: 26px; border-radius: 7px; }
 
 .status {
@@ -343,9 +340,9 @@ a { color: var(--astral); }
   box-shadow: var(--shadow);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
-.tile[data-mode="open"]     { --accent: var(--open); }
-.tile[data-mode="download"] { --accent: var(--download); }
-.tile[data-mode="setup"]    { --accent: var(--setup); }
+[data-mode="open"]     { --accent: var(--open); }
+[data-mode="download"] { --accent: var(--download); }
+[data-mode="setup"]    { --accent: var(--setup); }
 
 /* accent baseline that "powers up" on hover/focus */
 .tile::after {
