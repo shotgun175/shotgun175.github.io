@@ -1,4 +1,4 @@
-/* Lost Ark Tools — optional progressive enhancement: scroll-reveal.
+/* Lost Ark Tools: optional progressive enhancement, scroll-reveal.
  *
  * Loaded as a small parser-blocking <head> script so the class stamp below
  * lands before first paint. The page is fully usable without this file:
