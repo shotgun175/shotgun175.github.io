@@ -1,11 +1,11 @@
 <!-- ===========================================================================
-     Lost Ark Tools — hub badge
+     Lost Ark Tools: hub badge
      A tiny, framework-free "Part of Lost Ark Tools" link block that any of the
      tools can embed to point visitors back to the hub.
 
      THIS FILE IS THE CANONICAL BADGE SOURCE. Embedded copies live in the tool
-     repos; when copying, include an origin comment in the copy —
-     "synced from shotgun175.github.io/snippets/hub-badge.html" — so future
+     repos; when copying, include an origin comment in the copy,
+     "synced from shotgun175.github.io/snippets/hub-badge.html", so future
      badge updates can find and refresh every copy.
 
      USAGE
@@ -16,7 +16,7 @@
        Style isolation is best-effort, not guaranteed: the `all: revert` reset
        applies to the root element only, so host globals that target child
        elements (e.g. `a span { ... }` or `svg { ... }`) still reach the inner
-       spans/SVGs — verified by rendering the badge inside a hostile test page.
+       spans/SVGs, verified by rendering the badge inside a hostile test page.
        After embedding in a style-heavy app, eyeball the badge once; if it looks
        off, scope your globals or add explicit overrides under `.lat-badge`.
 
@@ -25,7 +25,7 @@
        URL changes.
      =========================================================================== -->
 <a class="lat-badge" href="https://shotgun175.github.io/" target="_blank" rel="noopener"
-   aria-label="Part of Lost Ark Tools — see all tools">
+   aria-label="Part of Lost Ark Tools, see all tools">
   <style>
     .lat-badge {
       all: revert;
