@@ -8,15 +8,16 @@ name: Link check
 # never builds or publishes anything.
 # push is main-only so a PR edit does not run the same sweep twice (the
 # pull_request event already covers the branch); both watch styles.css too,
-# because the data-mode accent rules validated below live there, and the
-# workflow itself, so a broken edit to this file cannot land silently.
+# because the data-mode accent rules validated below live there, the palette
+# satellite files checked against its :root tokens, and the workflow itself,
+# so a broken edit to this file cannot land silently.
 on:
   workflow_dispatch:
   push:
     branches: ['main']
-    paths: ['index.html', 'styles.css', '.github/workflows/link-check.yml']
+    paths: ['index.html', 'styles.css', 'favicon.svg', 'assets/og-image.html', 'snippets/hub-badge.html', '.github/workflows/link-check.yml']
   pull_request:
-    paths: ['index.html', 'styles.css', '.github/workflows/link-check.yml']
+    paths: ['index.html', 'styles.css', 'favicon.svg', 'assets/og-image.html', 'snippets/hub-badge.html', '.github/workflows/link-check.yml']
   schedule:
     - cron: '23 7 3 * *' # monthly
 
@@ -37,9 +38,13 @@ jobs:
         # TILE TEMPLATE is skipped natively, no example.com filter needed),
         # plus structural guards: every live tile must carry exactly one CTA,
         # and every tile's data-mode must be taught by the masthead legend AND
-        # have a .tile[data-mode] accent rule in styles.css (the three-place
+        # have a [data-mode] accent rule in styles.css (the three-place
         # coupling the docs describe). A guard failing means the files drifted
-        # from the markup this check understands.
+        # from the markup this check understands. The palette guard enforces
+        # the palette sync rule: every hex and rgb(a) triple in index.html,
+        # favicon.svg, assets/og-image.html and snippets/hub-badge.html must
+        # appear in the styles.css :root block. The badge copies in the five
+        # tool repos stay a manual README step.
         run: |
           set -euo pipefail
           python3 - > urls.txt <<'PY'
@@ -79,8 +84,13 @@ jobs:
 
           p = Tiles()
           p.feed(open('index.html', encoding='utf-8').read())
-          accent_modes = set(re.findall(r'\.tile\[data-mode="([^"]+)"\]',
-                                        open('styles.css', encoding='utf-8').read()))
+          css = open('styles.css', encoding='utf-8').read()
+          accent_modes = set(re.findall(r'^\[data-mode="([^"]+)"\]', css, re.M))
+          root = re.search(r':root\s*\{(.*?)\n\}', css, re.S).group(1)
+          HEX, RGB = r'#[0-9a-fA-F]{6}\b', r'rgba?\((\d+),\s*(\d+),\s*(\d+)'
+          allowed = {h.lower() for h in re.findall(HEX, root)}
+          allowed_rgb = ({tuple(int(h[i:i + 2], 16) for i in (1, 3, 5)) for h in allowed}
+                         | {tuple(map(int, m)) for m in re.findall(RGB, root)} | {(0, 0, 0)})
 
           errors = []
           if not p.tiles:
@@ -88,14 +98,20 @@ jobs:
           if not p.legend_modes:
               errors.append('no legend modes found (markup drift?)')
           if not accent_modes:
-              errors.append('no .tile[data-mode] accent rules found in styles.css (drift?)')
+              errors.append('no [data-mode] accent rules found in styles.css (drift?)')
           for i, t in enumerate(p.tiles, 1):
               if t['ctas'] != 1:
                   errors.append(f"tile {i} has {t['ctas']} CTA links, expected exactly 1")
               if t['mode'] not in p.legend_modes:
                   errors.append(f"tile {i} data-mode {t['mode']!r} is not taught by the legend {sorted(p.legend_modes)}")
               if t['mode'] not in accent_modes:
-                  errors.append(f"tile {i} data-mode {t['mode']!r} has no .tile[data-mode] accent rule in styles.css {sorted(accent_modes)}")
+                  errors.append(f"tile {i} data-mode {t['mode']!r} has no [data-mode] accent rule in styles.css {sorted(accent_modes)}")
+          for f in ('index.html', 'favicon.svg', 'assets/og-image.html', 'snippets/hub-badge.html'):
+              text = open(f, encoding='utf-8').read()
+              errors += [f'{f}: {h} is not in the styles.css :root palette'
+                         for h in re.findall(HEX, text) if h.lower() not in allowed]
+              errors += [f'{f}: rgb({",".join(m)}) is not in the styles.css :root palette'
+                         for m in re.findall(RGB, text) if tuple(map(int, m)) not in allowed_rgb]
           for u in p.urls:
               if not u.startswith('https://'):
                   errors.append(f'non-https tile link: {u!r}')

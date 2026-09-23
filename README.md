@@ -113,6 +113,11 @@ Deployment needs no workflow - it is plain static files. (The repository does
 carry one scheduled workflow, `.github/workflows/link-check.yml`, which checks
 the tool links monthly for rot; it never builds or publishes anything.)
 
+GitHub disables scheduled workflows in a public repo after 60 days with no
+repository activity. After a long gap, open **Actions**, select **Link check**,
+press **Enable workflow** if the inactivity banner shows, then **Run workflow**
+(a disabled workflow refuses manual runs).
+
 1. Push the default branch to `github.com/shotgun175/shotgun175.github.io`.
 2. In the repository: **Settings -> Pages -> Build and deployment**.
 3. Set **Source** to **Deploy from a branch**, branch = your default branch,
