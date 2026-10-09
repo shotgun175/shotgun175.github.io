@@ -50,14 +50,13 @@
 
   /* --- palette ---
      CANONICAL Lost Ark Tools brand palette. The no-build setup means these
-     hexes are also hardcoded in: index.html (masthead brand <svg>),
-     assets/og-image.html, snippets/hub-badge.html, and favicon.svg (plus the
-     badge copies embedded in the tool repos; see README "Hub badge embeds").
-     Change a color here -> update those together.
-     Satellite-only shades with no token here: #7e85a8 (dim lattice-node stroke:
-     favicon, index.html masthead mark, og-image URL line), #f2a93a (darker gold
-     gradient stop: favicon only), and #fff7e6 / #c8b487 (wordmark-gradient
-     highlights: styles.css wordmark, index.html masthead mark, favicon,
+     hexes are also hardcoded in: assets/og-image.html and
+     snippets/hub-badge.html (plus the badge copies embedded in the tool repos;
+     see README "Hub badge embeds"). Change a color here -> update those
+     together. The compass brand icon (favicons, masthead mark, badge mark) is
+     raster art and sits outside this palette.
+     Satellite-only shades with no token here: #7e85a8 (og-image URL line) and
+     #fff7e6 / #c8b487 (wordmark-gradient highlights: styles.css wordmark,
      og-image title). */
   --bg:        #0a0b13;   /* obsidian */
   --surface:   #14172a;   /* tile base */

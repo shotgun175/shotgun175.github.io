@@ -15,9 +15,9 @@ on:
   workflow_dispatch:
   push:
     branches: ['main']
-    paths: ['index.html', 'styles.css', 'favicon.svg', 'assets/og-image.html', 'snippets/hub-badge.html', '.github/workflows/link-check.yml']
+    paths: ['index.html', 'styles.css', 'assets/og-image.html', 'snippets/hub-badge.html', '.github/workflows/link-check.yml']
   pull_request:
-    paths: ['index.html', 'styles.css', 'favicon.svg', 'assets/og-image.html', 'snippets/hub-badge.html', '.github/workflows/link-check.yml']
+    paths: ['index.html', 'styles.css', 'assets/og-image.html', 'snippets/hub-badge.html', '.github/workflows/link-check.yml']
   schedule:
     - cron: '23 7 3 * *' # monthly
 
@@ -42,8 +42,9 @@ jobs:
         # coupling the docs describe). A guard failing means the files drifted
         # from the markup this check understands. The palette guard enforces
         # the palette sync rule: every hex and rgb(a) triple in index.html,
-        # favicon.svg, assets/og-image.html and snippets/hub-badge.html must
-        # appear in the styles.css :root block. The badge copies in the five
+        # assets/og-image.html and snippets/hub-badge.html must appear in the
+        # styles.css :root block. (The compass brand icon is raster art, so it
+        # has no hexes to check.) The badge copies in the five
         # tool repos stay a manual README step.
         run: |
           set -euo pipefail
@@ -106,7 +107,7 @@ jobs:
                   errors.append(f"tile {i} data-mode {t['mode']!r} is not taught by the legend {sorted(p.legend_modes)}")
               if t['mode'] not in accent_modes:
                   errors.append(f"tile {i} data-mode {t['mode']!r} has no [data-mode] accent rule in styles.css {sorted(accent_modes)}")
-          for f in ('index.html', 'favicon.svg', 'assets/og-image.html', 'snippets/hub-badge.html'):
+          for f in ('index.html', 'assets/og-image.html', 'snippets/hub-badge.html'):
               text = open(f, encoding='utf-8').read()
               errors += [f'{f}: {h} is not in the styles.css :root palette'
                          for h in re.findall(HEX, text) if h.lower() not in allowed]

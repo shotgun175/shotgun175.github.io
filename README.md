@@ -17,11 +17,12 @@ This repository is the GitHub Pages root for the `shotgun175` account
 | `styles.css` | The design system (palette, type, run-mode lamps, responsive layout, focus + reduced-motion). |
 | `enhance.js` | Optional scroll-reveal enhancement. The page works fully without it. |
 | `fonts/` | Self-hosted latin woff2 subsets of the three typefaces, declared via `@font-face` in `styles.css`. |
-| `favicon.svg` | Site icon (the Ark-Grid lattice mark). |
-| `favicon-32.png` | 32x32 raster fallback for browsers/crawlers that ignore SVG icons. |
+| `favicon-32.png` | 32x32 tab icon (the compass brand mark). |
+| `icon-192.png` | 192x192 icon for high-density screens and Android; also the masthead mark. |
 | `og-image.png` | 1200x630 social preview image. |
 | `apple-touch-icon.png` | 180x180 home-screen icon. |
 | `assets/og-image.html` | Editable source used to render `og-image.png`. |
+| `assets/brand-icon-master.png` | 512x512 master of the compass brand icon; every icon size is exported from it. |
 | `snippets/hub-badge.html` | A drop-in "Part of Lost Ark Tools" badge for the individual apps. |
 | `.nojekyll` | Tells GitHub Pages to serve files as-is (no Jekyll processing). |
 
@@ -86,6 +87,38 @@ python -m http.server 8000
 Double-clicking `index.html` works for a quick look, but some browsers
 restrict font loading from `file://`, so serve the folder for a faithful
 preview.
+
+## Regenerating the icons
+
+The brand mark is a compass rose, rendered art rather than vector, so every
+icon is a PNG exported from `assets/brand-icon-master.png`. If the master
+changes, re-export the set from the repo root (needs Pillow):
+
+```sh
+python - <<'PY'
+import base64, io
+from PIL import Image, ImageChops, ImageDraw
+
+def rounded(img, radius=0.22):
+    w, h = img.size
+    big = Image.new("L", (w * 4, h * 4))
+    ImageDraw.Draw(big).rounded_rectangle((0, 0, w * 4 - 1, h * 4 - 1), radius=w * 4 * radius, fill=255)
+    out = img.convert("RGBA")
+    out.putalpha(ImageChops.darker(out.getchannel("A"), big.resize((w, h), Image.LANCZOS)))
+    return out
+
+m = Image.open("assets/brand-icon-master.png").convert("RGB")
+rounded(m.resize((32, 32), Image.LANCZOS)).save("favicon-32.png", optimize=True)
+rounded(m.resize((192, 192), Image.LANCZOS)).save("icon-192.png", optimize=True)
+m.resize((180, 180), Image.LANCZOS).save("apple-touch-icon.png", optimize=True)  # iOS rounds it
+buf = io.BytesIO(); rounded(m.resize((52, 52), Image.LANCZOS)).save(buf, "PNG", optimize=True)
+print("data:image/png;base64," + base64.b64encode(buf.getvalue()).decode())
+PY
+```
+
+The printed data URI is the badge mark: paste it into the `src` of the
+`lat-badge__mark` image in `snippets/hub-badge.html`, then refresh the badge
+copies in the tool repos (see "Hub badge embeds").
 
 ## Regenerating the social image
 
@@ -152,11 +185,11 @@ from the snippet (each copy carries a "synced from …" origin comment).
   origin and no visitor IP goes to a font CDN. System fallback stacks keep the
   page legible if a file fails. (`assets/og-image.html` still pulls Google
   Fonts; it is only ever rendered manually, never served to visitors.)
-- **Changing brand colors: update these 5 files together.** The `:root` token
+- **Changing brand colors: update these 3 files together.** The `:root` token
   block in `styles.css` is the canonical Lost Ark Tools palette; the same hexes
-  are hardcoded (no-build constraint) in `index.html` (the masthead brand
-  `<svg>`), `assets/og-image.html`, `snippets/hub-badge.html`, and
-  `favicon.svg`. The badge copies embedded in the tool repos (see the table
-  above) carry the same hexes too.
+  are hardcoded (no-build constraint) in `assets/og-image.html` and
+  `snippets/hub-badge.html`. The badge copies embedded in the tool repos (see
+  the table above) carry the same hexes too. The compass brand icon is raster
+  art outside the palette; see "Regenerating the icons".
 - No backend, no analytics, no tracking.
 - This is a fan project and is not affiliated with Smilegate RPG or Amazon Games.

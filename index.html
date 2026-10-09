@@ -42,10 +42,10 @@
   <meta name="twitter:image" content="https://shotgun175.github.io/og-image.png" />
   <meta name="twitter:image:alt" content="Lost Ark Tools, a hub for shotgun175's raiding utilities." />
 
-  <!-- Icons (SVG first; the PNG is the fallback for older Safari and crawlers
-       that ignore SVG favicons) -->
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <!-- Icons: the compass mark, exported from assets/brand-icon-master.png
+       (README "Regenerating the icons"). Browsers pick the closest size. -->
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Fonts are self-hosted (fonts/, declared via @font-face in styles.css),
@@ -74,19 +74,7 @@
 
       <div class="masthead__top">
         <div class="brand">
-          <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
-            <rect width="32" height="32" rx="7" fill="#0a0b13"/>
-            <rect x="0.75" y="0.75" width="30.5" height="30.5" rx="6.25" fill="none" stroke="#54d8d2" stroke-opacity="0.28"/>
-            <g stroke="#54d8d2" stroke-opacity="0.45" stroke-width="1.4" stroke-linecap="round">
-              <path d="M9 9h14M9 16h14M9 23h14M9 9v14M16 9v14M23 9v14"/>
-            </g>
-            <g fill="#0a0b13" stroke="#7e85a8" stroke-width="1.2">
-              <circle cx="9" cy="9" r="1.7"/><circle cx="23" cy="9" r="1.7"/>
-              <circle cx="9" cy="23" r="1.7"/><circle cx="23" cy="23" r="1.7"/>
-            </g>
-            <circle cx="16" cy="16" r="4.6" fill="#f0b94d"/>
-            <circle cx="16" cy="16" r="4.6" fill="none" stroke="#fff7e6" stroke-opacity="0.5"/>
-          </svg>
+          <img class="brand__mark" src="icon-192.png" width="36" height="36" alt="" />
           <h1 class="wordmark">Lost&nbsp;Ark Tools</h1>
         </div>
         <p class="masthead__eyebrow">shotgun175 · Lost Ark raiding kit</p>
