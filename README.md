@@ -1,7 +1,7 @@
 # Lost Ark Tools
 
 A small static hub that collects shotgun175's Lost Ark utilities in one place, so
-they are no longer five unlinked repositories. One hand-written page, no framework,
+they are no longer six unlinked repositories. One hand-written page, no framework,
 no build step, no required JavaScript.
 
 **Live site:** https://shotgun175.github.io/
@@ -34,6 +34,7 @@ This repository is the GitHub Pages root for the `shotgun175` account
 | Dark Rotation Manager | Windows overlay (PyInstaller) | Latest GitHub release |
 | Bible Roster Updater | Command-line automation | GitHub repository |
 | Cash Shop Value | In-browser web app | https://shotgun175.github.io/LostArk-Cash-Shop-Value/ |
+| Lost Ark Checklist | In-browser web app | https://loa-checklist.web.app/ |
 
 ## How to add a tool
 
@@ -128,7 +129,7 @@ press **Enable workflow** if the inactivity banner shows, then **Run workflow**
 
 ## Hub badge embeds (status / sync reference)
 
-`snippets/hub-badge.html` is the canonical badge source. All five tools already
+`snippets/hub-badge.html` is the canonical badge source. All six tools
 embed it; when the badge changes, refresh these copies:
 
 | Tool | Where the badge lives |
@@ -138,6 +139,7 @@ embed it; when the badge changes, refresh these copies:
 | Dark Rotation Manager | bottom-bar link in `modules/gui_app.py` + a `README.md` line |
 | Bible Roster Updater | `README.md` line (CLI, no UI) |
 | Cash Shop Value | `web/src/lib/components/HubBadge.svelte` (rendered by the `src/routes/+layout.svelte` footer) |
+| Lost Ark Checklist | sidebar link above GitHub in `apps/client/src/app/app.component.html` (styles in `app.component.less`) |
 
 Note for the Svelte apps: a raw `<style>`-in-markup paste is not valid Svelte
 template content, so all three use a dedicated `HubBadge.svelte` component adapted
