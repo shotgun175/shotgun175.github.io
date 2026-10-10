@@ -145,7 +145,9 @@ palette step above takes it from ~210 KB to ~77 KB with no visible loss).
 
 Deployment needs no workflow - it is plain static files. (The repository does
 carry one scheduled workflow, `.github/workflows/link-check.yml`, which checks
-the tool links monthly for rot; it never builds or publishes anything.)
+the tool links monthly for rot; it never builds or publishes anything.
+`.github/dependabot.yml` is not a workflow: Dependabot checks monthly and opens
+a PR when the SHA-pinned `actions/checkout` in that workflow falls behind.)
 
 GitHub disables scheduled workflows in a public repo after 60 days with no
 repository activity. After a long gap, open **Actions**, select **Link check**,
