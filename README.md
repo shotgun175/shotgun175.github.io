@@ -17,11 +17,11 @@ This repository is the GitHub Pages root for the `shotgun175` account
 | `styles.css` | The design system (palette, type, run-mode lamps, responsive layout, focus + reduced-motion). |
 | `enhance.js` | Optional scroll-reveal enhancement. The page works fully without it. |
 | `fonts/` | Self-hosted latin woff2 subsets of the three typefaces, declared via `@font-face` in `styles.css`. |
-| `favicon-32.png` | 32x32 tab icon (the compass brand mark). |
-| `icon-192.png` | 192x192 icon for high-density screens and Android; also the masthead mark. |
-| `og-image.png` | 1200x630 social preview image. |
+| `assets/favicon-32.png` | 32x32 tab icon (the compass brand mark). |
+| `assets/icon-192.png` | 192x192 icon for high-density screens and Android; also the masthead mark. |
+| `assets/og-image.png` | 1200x630 social preview image. |
 | `apple-touch-icon.png` | 180x180 home-screen icon. |
-| `assets/og-image.html` | Editable source used to render `og-image.png`. |
+| `assets/og-image.html` | Editable source used to render `assets/og-image.png`. |
 | `assets/brand-icon-master.png` | 512x512 master of the compass brand icon; every icon size is exported from it. |
 | `snippets/hub-badge.html` | A drop-in "Part of Lost Ark Tools" badge for the individual apps. |
 | `.nojekyll` | Tells GitHub Pages to serve files as-is (no Jekyll processing). |
@@ -69,7 +69,7 @@ This repository is the GitHub Pages root for the `shotgun175` account
 5. If the tool changes the hub's headline roster: update the three head meta
    descriptions in `index.html` (`description`, `og:description`,
    `twitter:description`) that name the tools, then update the lede in
-   `assets/og-image.html` and re-export `og-image.png` (recipe below), so
+   `assets/og-image.html` and re-export `assets/og-image.png` (recipe below), so
    social shares do not contradict the page.
 
 That is the whole process, no build, no install. Serve the folder (see below) to
@@ -108,8 +108,8 @@ def rounded(img, radius=0.22):
     return out
 
 m = Image.open("assets/brand-icon-master.png").convert("RGB")
-rounded(m.resize((32, 32), Image.LANCZOS)).save("favicon-32.png", optimize=True)
-rounded(m.resize((192, 192), Image.LANCZOS)).save("icon-192.png", optimize=True)
+rounded(m.resize((32, 32), Image.LANCZOS)).save("assets/favicon-32.png", optimize=True)
+rounded(m.resize((192, 192), Image.LANCZOS)).save("assets/icon-192.png", optimize=True)
 m.resize((180, 180), Image.LANCZOS).save("apple-touch-icon.png", optimize=True)  # iOS rounds it
 buf = io.BytesIO(); rounded(m.resize((52, 52), Image.LANCZOS)).save(buf, "PNG", optimize=True)
 print("data:image/png;base64," + base64.b64encode(buf.getvalue()).decode())
@@ -122,19 +122,19 @@ copies in the tool repos (see "Hub badge embeds").
 
 ## Regenerating the social image
 
-`og-image.png` is rendered from `assets/og-image.html`. Edit that file, then
+`assets/og-image.png` is rendered from `assets/og-image.html`. Edit that file, then
 re-export deterministically from the repo root (both paths must be absolute;
 Chrome ignores relative ones):
 
 ```sh
 # 1. Render at exactly 1200x630, device scale 1 (git-bash shown; any Chromium works)
 "/c/Program Files (x86)/Google/Chrome/Application/chrome.exe" --headless \
-  "--screenshot=$(pwd -W)/og-image.png" --window-size=1200,630 \
+  "--screenshot=$(pwd -W)/assets/og-image.png" --window-size=1200,630 \
   --force-device-scale-factor=1 --hide-scrollbars --virtual-time-budget=8000 \
   "file:///$(pwd -W)/assets/og-image.html"
 
 # 2. Compress it in place to a 256-color palette PNG (needs Pillow)
-python -c "from PIL import Image; Image.open('og-image.png').convert('RGB').quantize(colors=256, dither=Image.Dither.FLOYDSTEINBERG).save('og-image.png', optimize=True)"
+python -c "from PIL import Image; Image.open('assets/og-image.png').convert('RGB').quantize(colors=256, dither=Image.Dither.FLOYDSTEINBERG).save('assets/og-image.png', optimize=True)"
 ```
 
 Keep the dimensions exact - the `og:image:width` / `og:image:height` meta tags
