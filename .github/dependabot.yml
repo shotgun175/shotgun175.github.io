@@ -1,0 +1,17 @@
+# Monthly version updates for the GitHub Actions in .github/workflows, with a
+# 7-day cooldown so brand-new releases settle first. link-check.yml pins
+# actions/checkout to a commit SHA with a version comment, and GitHub raises no
+# Dependabot alerts for SHA-pinned actions, so these version updates are the
+# only thing that keeps that pin (SHA and comment) current. Each PR touches the
+# workflow file, so the link check runs on it before merge.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ["*"]
