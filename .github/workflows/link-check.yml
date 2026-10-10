@@ -44,7 +44,7 @@ jobs:
         # the palette sync rule: every hex and rgb(a) triple in index.html,
         # assets/og-image.html and snippets/hub-badge.html must appear in the
         # styles.css :root block. (The compass brand icon is raster art, so it
-        # has no hexes to check.) The badge copies in the five
+        # has no hexes to check.) The badge copies in the six
         # tool repos stay a manual README step.
         run: |
           set -euo pipefail
